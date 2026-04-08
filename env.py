@@ -410,11 +410,14 @@ class ESGEnvironment:
     def _update_temporal_state(self) -> None:
         """Update month and quarter counters."""
         obs = self.state_internal.observation
-        obs.current_month += 1
-        
-        # Update quarters
-        if obs.current_month % 3 == 1 and obs.current_month > 1:
-            obs.quarters_completed += 1
+        prev_month = obs.current_month
+
+        # Keep month in 1..12 to satisfy Observation validation constraints.
+        obs.current_month = 1 if prev_month == 12 else prev_month + 1
+
+        # Quarter rollover happens when crossing 3->4, 6->7, 9->10, 12->1.
+        if prev_month in (3, 6, 9, 12):
+            obs.quarters_completed = min(4, obs.quarters_completed + 1)
     
     def _update_carbon_emissions(self) -> None:
         """
