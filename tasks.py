@@ -13,7 +13,7 @@ from typing import Dict, Any
 from models import TaskConfig, Observation
 
 
-_SCORE_EPSILON = 1e-6
+_SCORE_EPSILON = 1e-4
 
 
 def _clamp_open_unit_interval(score: float) -> float:

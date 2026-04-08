@@ -26,7 +26,7 @@ from models import Action, Observation
 from tasks import TASKS, grade_task
 
 
-_SCORE_EPSILON = 1e-6
+_SCORE_EPSILON = 1e-4
 
 
 def _sanitize_score(score: float) -> float:
