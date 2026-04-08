@@ -26,6 +26,14 @@ from models import Action, Observation
 from tasks import TASKS, grade_task
 
 
+_SCORE_EPSILON = 1e-6
+
+
+def _sanitize_score(score: float) -> float:
+    """Ensure scores are always in strict open interval (0, 1)."""
+    return max(_SCORE_EPSILON, min(1.0 - _SCORE_EPSILON, float(score)))
+
+
 def log_start(task_id: str, config: Dict[str, Any]) -> None:
     """Log task start in structured format."""
     print(
@@ -79,6 +87,7 @@ def log_step(
 
 def log_end(task_id: str, score: float, total_steps: int, final_obs: Dict[str, Any]) -> None:
     """Log task completion in structured format."""
+    score = _sanitize_score(score)
     print(
         f"[END] task={task_id} score={score:.6f} steps={total_steps}",
         flush=True,
@@ -347,7 +356,7 @@ def run_task(
             break
     
     # Grade final performance
-    final_score = grade_task(task_id, obs)
+    final_score = _sanitize_score(grade_task(task_id, obs))
     
     # Log task end
     log_end(
@@ -436,10 +445,14 @@ def run_inference() -> int:
                 "error": str(e),
                 "timestamp": time.time(),
             }), file=sys.stderr)
-            task_scores[task_id] = 0.0
+            task_scores[task_id] = _SCORE_EPSILON
     
     # Calculate average score
-    avg_score = sum(task_scores.values()) / len(task_scores) if task_scores else 0.0
+    avg_score = (
+        _sanitize_score(sum(task_scores.values()) / len(task_scores))
+        if task_scores
+        else _SCORE_EPSILON
+    )
     
     # Print final summary
     print(json.dumps({
