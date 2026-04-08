@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "esg-compliance-env"
+version = "1.0.0"
+description = "AI ESG Compliance & Sustainability Evaluation Environment for OpenEnv"
+authors = [
+    {name = "OpenEnv Hackathon Submission"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9,<3.13"
+keywords = ["openenv", "esg", "sustainability", "reinforcement-learning", "environment"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "pydantic>=2.0.0,<3.0.0",
+    "openai>=1.0.0,<2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/openenv/esg-compliance-env"
+Repository = "https://github.com/openenv/esg-compliance-env"
+
+[tool.setuptools]
+packages = ["esg_env"]
+
+[tool.setuptools.package-dir]
+esg_env = "."
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311', 'py312']
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+select = ["E", "F", "W", "I", "N", "UP"]
+ignore = ["E501"]

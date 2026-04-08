@@ -1,0 +1,110 @@
+# AI ESG Compliance & Sustainability Evaluation Environment
+# OpenEnv Specification File
+
+metadata:
+  environment_id: esg-compliance-env
+  environment_name: "ESG Compliance & Sustainability Evaluation"
+  version: "1.0.0"
+  description: |
+    Real-world environment for training AI agents to optimize Environmental, Social, 
+    and Governance (ESG) metrics in a simulated company. Agents make strategic decisions 
+    to reduce carbon emissions, increase renewable energy, improve diversity, and manage 
+    waste while balancing budget constraints.
+  authors:
+    - name: "OpenEnv Hackathon Submission"
+  tags:
+    - sustainability
+    - esg
+    - compliance
+    - optimization
+    - multi-objective
+  license: MIT
+
+environment:
+  entry_point: "env:ESGEnvironment"
+  observation_space:
+    type: "dict"
+    description: "Complete ESG state including environmental, social, governance, and financial metrics"
+  action_space:
+    type: "discrete"
+    n: 9
+    description: |
+      Discrete actions for ESG improvements:
+      0: INSTALL_SOLAR_PANELS - High cost, long-term renewable energy gain
+      1: UPGRADE_HVAC_EFFICIENCY - Moderate cost, reduces energy consumption
+      2: IMPLEMENT_RECYCLING_PROGRAM - Low cost, improves waste recycling
+      3: INSTALL_WATER_RECYCLING - Moderate cost, reduces water usage
+      4: CARBON_OFFSET_PURCHASE - Variable cost, immediate carbon reduction
+      5: DIVERSITY_HIRING_INITIATIVE - Moderate cost, improves diversity
+      6: EMPLOYEE_WELLNESS_PROGRAM - Low cost, improves employee satisfaction
+      7: ENERGY_AUDIT - Low cost, reveals optimization opportunities
+      8: NO_ACTION - Zero cost, conserve budget
+
+tasks:
+  - task_id: basic_compliance
+    difficulty: easy
+    description: |
+      Meet minimum ESG standards in 6 months. Achieve 15% carbon reduction, 
+      30% renewable energy, and maintain 60+ diversity score with $500K budget.
+    max_steps: 6
+    success_threshold: 0.8
+
+  - task_id: aggressive_sustainability
+    difficulty: medium
+    description: |
+      Achieve ambitious ESG targets in 9 months with tight budget. Reduce carbon 
+      by 40%, achieve 60% renewable energy, 70% waste recycling, and 75+ diversity 
+      score with $750K budget.
+    max_steps: 9
+    success_threshold: 0.7
+
+  - task_id: carbon_neutral_excellence
+    difficulty: hard
+    description: |
+      Achieve near carbon-neutrality in 12 months. Reduce carbon by 90%, achieve 
+      80% renewable energy, 75% waste recycling, 30% water reduction, 85+ diversity, 
+      90+ employee satisfaction, and zero violations with $1M budget.
+    max_steps: 12
+    success_threshold: 0.6
+
+grading:
+  grader_entry_point: "tasks:grade_task"
+  grading_method: "deterministic"
+  score_range:
+    min: 0.0
+    max: 1.0
+  description: |
+    Each task has a custom grader that evaluates performance across multiple ESG 
+    dimensions. Graders are fully deterministic and return scores between 0.0 
+    (failure) and 1.0 (perfect execution).
+
+inference:
+  entry_point: "inference:run_inference"
+  model_type: "llm"
+  required_env_vars:
+    - API_BASE_URL
+    - MODEL_NAME
+    - HF_TOKEN
+  timeout_minutes: 20
+  description: |
+    Runs an LLM-based agent via OpenAI API across all three tasks. Logs are 
+    structured JSON with [START], [STEP], and [END] events for full traceability.
+
+dependencies:
+  python_version: ">=3.9,<3.13"
+  requirements:
+    - pydantic>=2.0.0
+    - openai>=1.0.0
+
+runtime:
+  max_memory_mb: 8192
+  max_cpu_cores: 2
+  max_runtime_minutes: 20
+  deterministic: true
+
+validation:
+  test_mode: true
+  quick_test:
+    enabled: true
+    max_steps_override: 3
+    description: "Quick validation with reduced steps for faster testing"
