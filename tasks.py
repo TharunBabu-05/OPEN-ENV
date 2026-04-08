@@ -13,6 +13,14 @@ from typing import Dict, Any
 from models import TaskConfig, Observation
 
 
+_SCORE_EPSILON = 1e-6
+
+
+def _clamp_open_unit_interval(score: float) -> float:
+    """Clamp score to strict open interval (0, 1)."""
+    return max(_SCORE_EPSILON, min(1.0 - _SCORE_EPSILON, score))
+
+
 # ============================================================================
 # TASK 1: BASIC_COMPLIANCE (Easy)
 # ============================================================================
@@ -91,8 +99,8 @@ def grade_basic_compliance(final_obs: Observation) -> float:
         score += 0.05  # Partial credit
     # else: 0 points
     
-    # Ensure score is in valid range
-    return max(0.0, min(1.0, score))
+    # Return score in strict open interval (0, 1) for validator compliance.
+    return _clamp_open_unit_interval(score)
 
 
 # ============================================================================
@@ -176,8 +184,8 @@ def grade_aggressive_sustainability(final_obs: Observation) -> float:
         penalty = 0.1 * (final_obs.compliance_violations - 1)
         score -= penalty
     
-    # Ensure score is in valid range
-    return max(0.0, min(1.0, score))
+    # Return score in strict open interval (0, 1) for validator compliance.
+    return _clamp_open_unit_interval(score)
 
 
 # ============================================================================
@@ -296,8 +304,8 @@ def grade_carbon_neutral_excellence(final_obs: Observation) -> float:
     ):
         score = min(1.0, score + 0.05)  # Perfect execution bonus
     
-    # Ensure score is in valid range
-    return max(0.0, min(1.0, score))
+    # Return score in strict open interval (0, 1) for validator compliance.
+    return _clamp_open_unit_interval(score)
 
 
 # ============================================================================
@@ -418,7 +426,7 @@ def grade_task(task_id: str, final_obs: Observation) -> float:
         Score between 0.0 and 1.0
     """
     grader = get_grader(task_id)
-    return grader(final_obs)
+    return _clamp_open_unit_interval(grader(final_obs))
 
 
 # ============================================================================
