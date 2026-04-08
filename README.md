@@ -1,3 +1,13 @@
+---
+title: ESG Compliance Env
+emoji: "🌍"
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # 🌍 AI ESG Compliance & Sustainability Evaluation Environment
 
 [![OpenEnv](https://img.shields.io/badge/OpenEnv-Hackathon%202026-green)](https://openenv.ai)
