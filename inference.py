@@ -28,6 +28,10 @@ from tasks import TASKS, grade_task
 
 def log_start(task_id: str, config: Dict[str, Any]) -> None:
     """Log task start in structured format."""
+    print(
+        f"[START] task={task_id} difficulty={config['difficulty']} max_steps={config['max_steps']} budget={config['initial_budget']}",
+        flush=True,
+    )
     print(json.dumps({
         "type": "START",
         "task_id": task_id,
@@ -35,8 +39,7 @@ def log_start(task_id: str, config: Dict[str, Any]) -> None:
         "max_steps": config["max_steps"],
         "budget": config["initial_budget"],
         "timestamp": time.time(),
-    }))
-    sys.stdout.flush()
+    }), flush=True)
 
 
 def log_step(
@@ -49,6 +52,10 @@ def log_step(
     info: Dict[str, Any],
 ) -> None:
     """Log environment step in structured format."""
+    print(
+        f"[STEP] task={task_id} step={step} action={action} reward={reward:.6f} done={info.get('task_progress', 0.0) >= 1.0}",
+        flush=True,
+    )
     print(json.dumps({
         "type": "STEP",
         "task_id": task_id,
@@ -67,12 +74,15 @@ def log_step(
         "carbon_reduction_pct": info.get("carbon_reduction_pct", 0.0),
         "task_progress": info.get("task_progress", 0.0),
         "timestamp": time.time(),
-    }))
-    sys.stdout.flush()
+    }), flush=True)
 
 
 def log_end(task_id: str, score: float, total_steps: int, final_obs: Dict[str, Any]) -> None:
     """Log task completion in structured format."""
+    print(
+        f"[END] task={task_id} score={score:.6f} steps={total_steps}",
+        flush=True,
+    )
     print(json.dumps({
         "type": "END",
         "task_id": task_id,
@@ -90,8 +100,7 @@ def log_end(task_id: str, score: float, total_steps: int, final_obs: Dict[str, A
             "violations": final_obs["compliance_violations"],
         },
         "timestamp": time.time(),
-    }))
-    sys.stdout.flush()
+    }), flush=True)
 
 
 def create_system_prompt() -> str:
@@ -287,21 +296,36 @@ def run_task(
     
     # Run episode
     for step in range(task_config.max_steps):
-        # In offline mode (missing credentials), use a safe deterministic fallback.
-        if offline_mode:
-            action, reasoning = int(Action.NO_ACTION), "Offline fallback: no API credentials"
-        else:
-            # Get action from LLM
-            action, reasoning = get_llm_action(
-                client=client,
-                model_name=model_name,
-                task_config=task_config.model_dump(),
-                obs=obs,
-                step=step,
+        try:
+            # In offline mode (missing credentials), use a safe deterministic fallback.
+            if offline_mode:
+                action, reasoning = int(Action.NO_ACTION), "Offline fallback: no API credentials"
+            else:
+                # Get action from LLM
+                action, reasoning = get_llm_action(
+                    client=client,
+                    model_name=model_name,
+                    task_config=task_config.model_dump(),
+                    obs=obs,
+                    step=step,
+                )
+
+            # Execute action
+            obs, reward, terminated, truncated, info = env.step(action)
+        except Exception as exc:
+            print(
+                json.dumps(
+                    {
+                        "type": "ERROR",
+                        "task_id": task_id,
+                        "step": step + 1,
+                        "error": str(exc),
+                        "timestamp": time.time(),
+                    }
+                ),
+                file=sys.stderr,
             )
-        
-        # Execute action
-        obs, reward, terminated, truncated, info = env.step(action)
+            break
         
         total_reward += reward
         step_count += 1
