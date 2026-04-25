@@ -46,9 +46,9 @@ ACTION_NAMES = {
 }
 
 TASK_OPTIONS = {
-    "Easy — Basic Compliance (6 months, $500K)": "basic_compliance",
-    "Medium — Aggressive Sustainability (9 months, $750K)": "aggressive_sustainability",
-    "Hard — Carbon Neutral Excellence (12 months, $1M)": "carbon_neutral_excellence",
+    "Easy -- Basic Compliance (6 months, $500K)": "basic_compliance",
+    "Medium -- Aggressive Sustainability (9 months, $750K)": "aggressive_sustainability",
+    "Hard -- Carbon Neutral Excellence (12 months, $1M)": "carbon_neutral_excellence",
 }
 
 
@@ -71,15 +71,15 @@ def format_observation(obs: Observation, step: int, max_steps: int) -> str:
     budget_color = "🟢" if obs.available_budget > 100_000 else ("🟡" if obs.available_budget > 0 else "🔴")
     violation_color = "🟢" if obs.compliance_violations == 0 else ("🟡" if obs.compliance_violations <= 2 else "🔴")
 
-    return f"""## 📊 Month {step}/{max_steps} — ESG Dashboard
+    return f"""## 📊 Month {step}/{max_steps} -- ESG Dashboard
 
 ### 🌿 Environmental
 | Metric | Current | Target |
 |--------|---------|--------|
 | Carbon Reduction | **{carbon_pct:.1f}%** | {obs.target_carbon_reduction_pct:.0f}% |
 | Renewable Energy | **{obs.renewable_energy_pct:.1f}%** | {obs.target_renewable_pct:.0f}% |
-| Waste Recycled | **{obs.waste_recycled_pct:.1f}%** | — |
-| Water Reduction | **{water_pct:.1f}%** | — |
+| Waste Recycled | **{obs.waste_recycled_pct:.1f}%** | -- |
+| Water Reduction | **{water_pct:.1f}%** | -- |
 
 ### 👥 Social
 | Metric | Value |
@@ -246,11 +246,11 @@ def build_ui():
         # Header
         gr.Markdown("""
 # 🌍 ESG Compliance & Sustainability RL Environment
-**OpenEnv Hackathon — Long-Horizon Strategic Planning**
+**OpenEnv Hackathon -- Long-Horizon Strategic Planning**
 
 Train and evaluate AI agents on corporate ESG decision-making. Each month, choose an action
-to reduce carbon emissions, boost renewable energy, and improve social scores — all while
-managing a limited budget over 6–12 months.
+to reduce carbon emissions, boost renewable energy, and improve social scores -- all while
+managing a limited budget over 6-12 months.
         """)
 
         with gr.Row():

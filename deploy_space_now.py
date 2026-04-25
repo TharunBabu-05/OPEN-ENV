@@ -1,5 +1,5 @@
 """
-deploy_space_now.py — One-command Space deployment.
+deploy_space_now.py -- One-command Space deployment.
 
 Usage:
     python deploy_space_now.py --token hf_YOUR_TOKEN_HERE
@@ -15,7 +15,7 @@ from pathlib import Path
 def deploy(token: str):
     from huggingface_hub import HfApi, create_repo
 
-    HF_USERNAME = "tharu5054"
+    HF_USERNAME = "tharun5054"
     SPACE_NAME  = "esg-compliance-env"
     REPO_ID     = f"{HF_USERNAME}/{SPACE_NAME}"
 

@@ -1,5 +1,5 @@
 """
-ESG RL Training Script — GRPO + Unsloth + TRL
+ESG RL Training Script -- GRPO + Unsloth + TRL
 
 This script trains an LLM to make better ESG decisions using
 Group Relative Policy Optimization (GRPO) with verifiable rewards.
@@ -21,15 +21,15 @@ Usage:
   python train_rl.py --task basic_compliance --max_steps 200
 
 Hackathon guide compliance:
-  ✓ §3:  Starts from capable instruct model
-  ✓ §6:  Easy task first (basic_compliance, 6 steps)
-  ✓ §7:  Multiple independent reward functions
-  ✓ §8:  Anti-cheat checks in reward_functions.py
-  ✓ §10: TRL + Unsloth stack
-  ✓ §11: GRPO with verifiable rewards (no learned reward model)
-  ✓ §12: Unsloth for fast inference during rollouts
-  ✓ §15: Logs reward, format, anti-cheat columns separately
-  ✓ §16: Safe LoRA save path
+  [OK] §3:  Starts from capable instruct model
+  [OK] §6:  Easy task first (basic_compliance, 6 steps)
+  [OK] §7:  Multiple independent reward functions
+  [OK] §8:  Anti-cheat checks in reward_functions.py
+  [OK] §10: TRL + Unsloth stack
+  [OK] §11: GRPO with verifiable rewards (no learned reward model)
+  [OK] §12: Unsloth for fast inference during rollouts
+  [OK] §15: Logs reward, format, anti-cheat columns separately
+  [OK] §16: Safe LoRA save path
 """
 
 import argparse
@@ -172,7 +172,7 @@ def make_trl_reward_fn(cfg: Dict):
 
         # Log reward stats every call
         avg = sum(rewards) / len(rewards) if rewards else 0.0
-        log.debug(f"Batch rewards — mean: {avg:.3f}, min: {min(rewards):.3f}, max: {max(rewards):.3f}")
+        log.debug(f"Batch rewards -- mean: {avg:.3f}, min: {min(rewards):.3f}, max: {max(rewards):.3f}")
 
         return rewards
 
@@ -259,7 +259,7 @@ def train(cfg: Dict):
     from trl import GRPOConfig, GRPOTrainer
 
     log.info("=" * 60)
-    log.info("ESG RL TRAINING — GRPO")
+    log.info("ESG RL TRAINING -- GRPO")
     log.info("=" * 60)
     log.info(f"Config: {json.dumps({k: v for k, v in cfg.items() if k != 'target_modules'}, indent=2)}")
 
@@ -309,12 +309,12 @@ def train(cfg: Dict):
     elapsed = time.time() - start_time
     log.info(f"Training complete in {elapsed:.1f}s")
 
-    # 6. Save model (safely — never merge 4-bit naively)
+    # 6. Save model (safely -- never merge 4-bit naively)
     # §16: Use the adapter-only save path
     adapter_path = output_dir / "lora_adapter"
     model.save_pretrained(str(adapter_path))
     tokenizer.save_pretrained(str(adapter_path))
-    log.info(f"LoRA adapter saved → {adapter_path}")
+    log.info(f"LoRA adapter saved -> {adapter_path}")
 
     # Save merged model only if Unsloth is available (handles 4-bit correctly)
     if backend == "unsloth":
@@ -326,7 +326,7 @@ def train(cfg: Dict):
                 tokenizer,
                 save_method="merged_16bit",
             )
-            log.info(f"Merged 16-bit model saved → {merged_path}")
+            log.info(f"Merged 16-bit model saved -> {merged_path}")
         except Exception as e:
             log.warning(f"Could not save merged model: {e}. Use lora_adapter instead.")
 
@@ -334,7 +334,7 @@ def train(cfg: Dict):
     cfg_save_path = output_dir / "train_config_used.json"
     with open(cfg_save_path, "w") as f:
         json.dump({k: v for k, v in cfg.items() if k != "target_modules"}, f, indent=2)
-    log.info(f"Config saved → {cfg_save_path}")
+    log.info(f"Config saved -> {cfg_save_path}")
 
     return trainer
 
@@ -349,14 +349,14 @@ def smoke_test():
     Tests: dataset generation, reward functions, env stepping.
     """
     log.info("=" * 60)
-    log.info("SMOKE TEST — No GPU required")
+    log.info("SMOKE TEST -- No GPU required")
     log.info("=" * 60)
 
     # Test dataset builder
     from dataset_builder import generate_dataset
     samples = generate_dataset(n_episodes_per_task=2, output_path="data/smoke_test.jsonl", verbose=True)
     assert len(samples) > 0, "Dataset generation failed"
-    log.info(f"✓ Dataset: {len(samples)} samples")
+    log.info(f"[OK] Dataset: {len(samples)} samples")
 
     # Test reward functions
     from reward_functions import reward_composite, reward_format_compliance, reward_anti_cheat
@@ -388,9 +388,9 @@ def smoke_test():
 
     assert fmt_r[0] == 1.0, "Format reward for good JSON should be 1.0"
     assert fmt_r[2] == 0.0, "Format reward for unparseable should be 0.0"
-    log.info("✓ Reward functions working correctly")
+    log.info("[OK] Reward functions working correctly")
     log.info("=" * 60)
-    log.info("SMOKE TEST PASSED ✓")
+    log.info("SMOKE TEST PASSED [OK]")
     log.info("=" * 60)
 
 

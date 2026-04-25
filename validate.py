@@ -31,9 +31,9 @@ def test_environment_api():
     try:
         obs = env.reset()
         assert isinstance(obs, Observation), "reset() must return Observation"
-        print("✓ reset() returns Observation")
+        print("[OK] reset() returns Observation")
     except Exception as e:
-        print(f"✗ reset() failed: {e}")
+        print(f"[X] reset() failed: {e}")
         return False
     
     # Test step
@@ -44,22 +44,22 @@ def test_environment_api():
         assert isinstance(terminated, bool), "step() must return bool terminated"
         assert isinstance(truncated, bool), "step() must return bool truncated"
         assert isinstance(info, dict), "step() must return dict info"
-        print("✓ step() returns (obs, reward, terminated, truncated, info)")
+        print("[OK] step() returns (obs, reward, terminated, truncated, info)")
         print(f"  Sample reward: {reward:.3f}")
     except Exception as e:
-        print(f"✗ step() failed: {e}")
+        print(f"[X] step() failed: {e}")
         return False
     
     # Test state
     try:
         current_obs = env.state()
         assert isinstance(current_obs, Observation), "state() must return Observation"
-        print("✓ state() returns Observation")
+        print("[OK] state() returns Observation")
     except Exception as e:
-        print(f"✗ state() failed: {e}")
+        print(f"[X] state() failed: {e}")
         return False
     
-    print("\n✓ Environment API test PASSED\n")
+    print("\n[OK] Environment API test PASSED\n")
     return True
 
 
@@ -129,24 +129,24 @@ def test_graders():
                 score = grader_func(obs)
                 
                 if not isinstance(score, (int, float)):
-                    print(f"  ✗ {case_name}: Grader must return numeric score, got {type(score)}")
+                    print(f"  [X] {case_name}: Grader must return numeric score, got {type(score)}")
                     all_passed = False
                     continue
                 
                 if score < 0.0 or score > 1.0:
-                    print(f"  ✗ {case_name}: Score {score:.3f} outside valid range [0.0, 1.0]")
+                    print(f"  [X] {case_name}: Score {score:.3f} outside valid range [0.0, 1.0]")
                     all_passed = False
                 else:
-                    print(f"  ✓ {case_name}: {score:.3f} (valid)")
+                    print(f"  [OK] {case_name}: {score:.3f} (valid)")
                     
             except Exception as e:
-                print(f"  ✗ {case_name}: Grader raised exception: {e}")
+                print(f"  [X] {case_name}: Grader raised exception: {e}")
                 all_passed = False
     
     if all_passed:
-        print("\n✓ Grader test PASSED\n")
+        print("\n[OK] Grader test PASSED\n")
     else:
-        print("\n✗ Grader test FAILED\n")
+        print("\n[X] Grader test FAILED\n")
     
     return all_passed
 
@@ -183,20 +183,20 @@ def test_determinism():
     
     # Check determinism
     if traj1 == traj2:
-        print("✓ Same seed produces identical trajectories")
+        print("[OK] Same seed produces identical trajectories")
     else:
-        print("✗ Same seed produces DIFFERENT trajectories (non-deterministic!)")
+        print("[X] Same seed produces DIFFERENT trajectories (non-deterministic!)")
         print(f"  Trajectory 1: {traj1}")
         print(f"  Trajectory 2: {traj2}")
         return False
     
     # Check that different seeds differ
     if traj1 != traj3:
-        print("✓ Different seeds produce different trajectories")
+        print("[OK] Different seeds produce different trajectories")
     else:
         print("⚠ Different seeds produce SAME trajectories (suspicious but not fatal)")
     
-    print("\n✓ Determinism test PASSED\n")
+    print("\n[OK] Determinism test PASSED\n")
     return True
 
 
@@ -212,18 +212,18 @@ def test_tasks():
     for task_id in required_tasks:
         if task_id in TASKS:
             task = TASKS[task_id]
-            print(f"✓ Task '{task_id}' found")
+            print(f"[OK] Task '{task_id}' found")
             print(f"  - Difficulty: {task.difficulty}")
             print(f"  - Max steps: {task.max_steps}")
             print(f"  - Budget: ${task.initial_budget:,.0f}")
         else:
-            print(f"✗ Task '{task_id}' MISSING")
+            print(f"[X] Task '{task_id}' MISSING")
             all_present = False
     
     if all_present:
-        print("\n✓ Task configuration PASSED\n")
+        print("\n[OK] Task configuration PASSED\n")
     else:
-        print("\n✗ Task configuration FAILED\n")
+        print("\n[X] Task configuration FAILED\n")
     
     return all_present
 
@@ -258,16 +258,16 @@ def test_full_episode():
         print(f"\nFinal score: {score:.3f}")
         
         if 0.0 <= score <= 1.0:
-            print("✓ Final score in valid range")
+            print("[OK] Final score in valid range")
         else:
-            print(f"✗ Final score {score:.3f} outside [0.0, 1.0]")
+            print(f"[X] Final score {score:.3f} outside [0.0, 1.0]")
             return False
         
-        print("\n✓ Full episode test PASSED\n")
+        print("\n[OK] Full episode test PASSED\n")
         return True
         
     except Exception as e:
-        print(f"\n✗ Full episode test FAILED with exception: {e}")
+        print(f"\n[X] Full episode test FAILED with exception: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -286,15 +286,15 @@ def test_action_validation():
         try:
             env.reset()
             obs, reward, terminated, truncated, info = env.step(action_id)
-            print(f"✓ Action {action_id}: executed successfully, reward={reward:.3f}")
+            print(f"[OK] Action {action_id}: executed successfully, reward={reward:.3f}")
         except Exception as e:
-            print(f"✗ Action {action_id}: raised exception: {e}")
+            print(f"[X] Action {action_id}: raised exception: {e}")
             all_passed = False
     
     if all_passed:
-        print("\n✓ Action validation PASSED\n")
+        print("\n[OK] Action validation PASSED\n")
     else:
-        print("\n✗ Action validation FAILED\n")
+        print("\n[X] Action validation FAILED\n")
     
     return all_passed
 
@@ -321,7 +321,7 @@ def main():
             passed = test_func()
             results.append((test_name, passed))
         except Exception as e:
-            print(f"\n✗ {test_name} test crashed: {e}\n")
+            print(f"\n[X] {test_name} test crashed: {e}\n")
             import traceback
             traceback.print_exc()
             results.append((test_name, False))
@@ -332,17 +332,17 @@ def main():
     print("=" * 70)
     
     for test_name, passed in results:
-        status = "✓ PASS" if passed else "✗ FAIL"
+        status = "[OK] PASS" if passed else "[X] FAIL"
         print(f"{status}: {test_name}")
     
     all_passed = all(passed for _, passed in results)
     
     print("=" * 70)
     if all_passed:
-        print("✓✓✓ ALL TESTS PASSED - READY FOR SUBMISSION ✓✓✓")
+        print("[OK][OK][OK] ALL TESTS PASSED - READY FOR SUBMISSION [OK][OK][OK]")
         return 0
     else:
-        print("✗✗✗ SOME TESTS FAILED - FIX BEFORE SUBMISSION ✗✗✗")
+        print("[X][X][X] SOME TESTS FAILED - FIX BEFORE SUBMISSION [X][X][X]")
         return 1
 
 

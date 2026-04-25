@@ -128,7 +128,7 @@ def plot_score_comparison(results: Dict[str, dict], output_path: str):
     ax.yaxis.grid(True, color="#334155", zorder=0)
     legend = ax.legend(facecolor="#1e293b", labelcolor="white", edgecolor="#475569")
 
-    plt.suptitle("ESG RL Agent — Score Comparison\n(Higher is Better)",
+    plt.suptitle("ESG RL Agent -- Score Comparison\n(Higher is Better)",
                  color="white", fontsize=16, fontweight="bold", y=1.02)
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches="tight", facecolor=fig.get_facecolor())
@@ -192,7 +192,7 @@ def plot_reward_history(results: Dict[str, dict], output_path: str):
 
 
 # ---------------------------------------------------------------------------
-# Plot 3: Final ESG metrics comparison (radar/spider — uses bar instead for simplicity)
+# Plot 3: Final ESG metrics comparison (radar/spider -- uses bar instead for simplicity)
 # ---------------------------------------------------------------------------
 
 def plot_esg_metrics(results: Dict[str, dict], output_path: str):
@@ -233,7 +233,7 @@ def plot_esg_metrics(results: Dict[str, dict], output_path: str):
     ax.set_xticklabels(metric_labels, color="white", fontsize=11)
     ax.set_ylim(0, 100)
     ax.set_ylabel("Value (all on 0-100 scale)", color="white", fontsize=11)
-    ax.set_title("Final ESG Metrics — Agent Comparison\n(Higher is Better for All Metrics)",
+    ax.set_title("Final ESG Metrics -- Agent Comparison\n(Higher is Better for All Metrics)",
                  color="white", fontsize=14, fontweight="bold")
     ax.tick_params(colors="white")
     ax.spines["bottom"].set_color("#475569")

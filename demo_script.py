@@ -1,5 +1,5 @@
 """
-Demo script — shows before/after agent behavior in terminal.
+Demo script -- shows before/after agent behavior in terminal.
 
 This script demonstrates:
   1. A baseline (heuristic) agent run on the easy task

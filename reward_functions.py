@@ -7,7 +7,7 @@ metadata, steps the environment, and returns a list of reward scalars.
 
 Design principles (from hackathon guide §7, §8):
 - Multiple independent reward functions (not a single monolithic one).
-- Objective, verifiable signals — no LLM-as-judge.
+- Objective, verifiable signals -- no LLM-as-judge.
 - Anti-cheat checks built into every function.
 - Each function is stateless with respect to training; it creates its own
   ephemeral environment instance to evaluate the completion.
@@ -79,9 +79,9 @@ def reward_env_outcome(
     """
     Primary reward: step the environment and return shaped reward.
 
-    - Parseable, valid action → environment reward (can be positive or negative)
-    - Unparseable output → -1.0 (format failure penalty)
-    - Exception during step → -0.5
+    - Parseable, valid action -> environment reward (can be positive or negative)
+    - Unparseable output -> -1.0 (format failure penalty)
+    - Exception during step -> -0.5
     """
     rewards = []
 
@@ -171,9 +171,9 @@ def reward_anti_cheat(
     """
     Anti-cheat reward: penalizes lazy/exploitative strategies.
 
-    - Choosing NO_ACTION when budget > $100K → -0.5
-    - Choosing the same cheap action (audit/wellness/recycling) → -0.3
-    - Otherwise → 0.0
+    - Choosing NO_ACTION when budget > $100K -> -0.5
+    - Choosing the same cheap action (audit/wellness/recycling) -> -0.3
+    - Otherwise -> 0.0
     """
     rewards = []
 
@@ -240,7 +240,7 @@ def reward_task_progress(
         try:
             obs = Observation(**{k: v for k, v in obs_dict.items() if not k.startswith("_")})
             score = grade_task(task_id, obs)
-            # Scale: 0 score → -1.0, perfect score → +2.0
+            # Scale: 0 score -> -1.0, perfect score -> +2.0
             scaled = (score - 0.5) * 4.0
             rewards.append(float(max(-1.0, min(2.0, scaled))))
         except Exception:

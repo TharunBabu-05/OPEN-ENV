@@ -8,7 +8,7 @@ random/heuristic policy. Each sample contains:
   - obs_dict: serialized observation for reward computation
   - step: step index in the episode
 
-This dataset is used as the "prompt pool" for GRPO training — the model
+This dataset is used as the "prompt pool" for GRPO training -- the model
 is asked to generate actions, which are then evaluated by the environment.
 """
 
@@ -46,11 +46,11 @@ Available Actions:
 8. NO_ACTION                 - $0, conserve budget for later
 
 Key Principles:
-- Solar panels compound over time — invest early for maximum benefit.
+- Solar panels compound over time -- invest early for maximum benefit.
 - Balance immediate impact (carbon offsets) vs. long-term ROI (solar, HVAC).
 - Monitor budget: going bankrupt ends the episode with a penalty.
 - Diversity and wellness actions matter for social scoring.
-- Avoid repeating the same cheap action — reward hacking is penalized.
+- Avoid repeating the same cheap action -- reward hacking is penalized.
 
 Respond with ONLY a valid JSON object:
 {"action": <0-8>, "reasoning": "<brief explanation>"}"""
@@ -113,7 +113,7 @@ def build_obs_prompt(task_config: Dict[str, Any], obs: Observation, step: int) -
 def _heuristic_action(obs: Observation, task_config: Dict[str, Any], rng: random.Random) -> int:
     """
     Simple heuristic policy for generating diverse training prompts.
-    NOT the agent — just used to advance the env to varied states.
+    NOT the agent -- just used to advance the env to varied states.
     """
     budget = obs.available_budget
     carbon_pct = (
