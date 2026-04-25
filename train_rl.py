@@ -165,12 +165,30 @@ def make_trl_reward_fn(cfg: Dict):
     """
     Returns a single reward function compatible with TRL's GRPOTrainer.
 
-    TRL passes: completions (List[str]) + any extra columns from the dataset.
-    We extract obs_snapshot and task_id from the dataset columns.
+    TRL passes: completions (List[str] or List[List[dict]]) + extra columns.
+    We normalize completions to plain strings before calling reward functions.
     """
     from reward_functions import reward_composite
 
-    def trl_reward_fn(completions: List[str], **batch) -> List[float]:
+    def _normalize_completion(c):
+        """Convert any TRL completion format to a plain string."""
+        if isinstance(c, str):
+            return c
+        if isinstance(c, list):
+            # Chat format: [{"role": "assistant", "content": "..."}]
+            parts = []
+            for item in c:
+                if isinstance(item, dict):
+                    parts.append(item.get("content", str(item)))
+                else:
+                    parts.append(str(item))
+            return " ".join(parts)
+        return str(c)
+
+    def trl_reward_fn(completions, **batch) -> List[float]:
+        # Normalize completions to plain strings
+        completions = [_normalize_completion(c) for c in completions]
+
         obs_snapshots = batch.get("obs_snapshot", [{}] * len(completions))
         task_ids = batch.get("task_id", ["basic_compliance"] * len(completions))
 
@@ -192,6 +210,7 @@ def make_trl_reward_fn(cfg: Dict):
         return rewards
 
     return trl_reward_fn
+
 
 
 # ---------------------------------------------------------------------------
