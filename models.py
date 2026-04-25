@@ -343,6 +343,16 @@ class RewardComponents(BaseModel):
         description="Final reward for completing task objectives"
     )
     
+    anti_cheat_penalty: float = Field(
+        default=0.0,
+        description="Penalty for reward hacking (e.g. spamming NO_ACTION or repeating same cheap action)"
+    )
+    
+    format_compliance_reward: float = Field(
+        default=0.0,
+        description="Small reward for taking a valid, non-trivial action (format compliance signal)"
+    )
+    
     total_reward: float = Field(
         ...,
         description="Sum of all reward components"

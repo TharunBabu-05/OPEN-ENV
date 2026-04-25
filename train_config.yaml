@@ -1,0 +1,66 @@
+# ESG RL Training Configuration
+# Used by train_rl.py
+# Adjust based on available GPU VRAM.
+
+# ─────────────────────────────────────────
+# Model (choose based on your GPU VRAM)
+# ─────────────────────────────────────────
+# 4GB VRAM:  unsloth/Qwen2.5-0.5B-Instruct
+# 8GB VRAM:  unsloth/Qwen2.5-1.5B-Instruct   ← default
+# 16GB VRAM: unsloth/Qwen2.5-3B-Instruct
+# 24GB VRAM: unsloth/Qwen2.5-7B-Instruct
+# Colab T4:  unsloth/Llama-3.2-1B-Instruct
+base_model: "unsloth/Qwen2.5-1.5B-Instruct"
+
+max_seq_length: 512
+load_in_4bit: true
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# ─────────────────────────────────────────
+# Curriculum (IMPORTANT: start easy!)
+# Stage 1: basic_compliance only
+# Stage 2: add aggressive_sustainability
+# Stage 3: all three tasks
+# ─────────────────────────────────────────
+task_ids:
+  - basic_compliance
+
+n_episodes_per_task: 20
+
+# ─────────────────────────────────────────
+# Training hyperparameters
+# ─────────────────────────────────────────
+learning_rate: 5.0e-6
+num_train_epochs: 1
+max_steps: 200           # Increase to 500+ for real training
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 4
+
+# GRPO-specific
+num_generations: 4       # Number of rollouts per prompt (4-8 recommended)
+max_new_tokens: 128      # ESG actions are short JSON
+temperature: 0.7         # Some exploration during rollouts
+
+# ─────────────────────────────────────────
+# Logging & saving
+# ─────────────────────────────────────────
+output_dir: "outputs/esg_rl_model"
+logging_steps: 5
+save_steps: 50
+
+# ─────────────────────────────────────────
+# Flags
+# ─────────────────────────────────────────
+smoke_test: false
+use_unsloth: true
+cpu_only: false          # Set true to test on CPU (very slow)

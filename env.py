@@ -252,7 +252,7 @@ class ESGEnvironment:
         self._update_audit_score()
         
         # Calculate shaped reward
-        reward_components = self._calculate_reward(prev_state)
+        reward_components = self._calculate_reward(prev_state, action_enum)
         reward = reward_components.total_reward
         
         # Check termination conditions
@@ -459,7 +459,7 @@ class ESGEnvironment:
         # Weighted audit score
         obs.audit_score = 0.4 * env_score + 0.3 * social_score + 0.3 * governance_score
     
-    def _calculate_reward(self, prev_state: Observation) -> RewardComponents:
+    def _calculate_reward(self, prev_state: Observation, action_enum: "Action" = None) -> RewardComponents:
         """
         Calculate shaped reward based on progress toward targets.
         
@@ -544,6 +544,22 @@ class ESGEnvironment:
             else:
                 task_completion_reward = -1.0
         
+        # 11. Anti-cheat penalty (reward hacking detection)
+        anti_cheat_penalty = 0.0
+        recent_actions = obs.actions_taken[-3:] if len(obs.actions_taken) >= 3 else []
+        if len(recent_actions) == 3:
+            # Penalize spamming NO_ACTION (action 8)
+            if all(a == 8 for a in recent_actions):
+                anti_cheat_penalty = -0.5
+            # Penalize repeating same cheap action (audit=7, wellness=6, recycling=2)
+            elif len(set(recent_actions)) == 1 and recent_actions[0] in (2, 6, 7):
+                anti_cheat_penalty = -0.3
+        
+        # 12. Format compliance reward (small bonus for taking a real, non-trivial action)
+        format_compliance_reward = 0.0
+        if action_enum is not None and int(action_enum) != 8:  # Not NO_ACTION
+            format_compliance_reward = 0.05
+        
         # Total reward
         total = (
             carbon_reward
@@ -556,6 +572,8 @@ class ESGEnvironment:
             + quarterly_bonus
             + synergy_bonus
             + task_completion_reward
+            + anti_cheat_penalty
+            + format_compliance_reward
         )
         
         # Update previous state tracking
@@ -576,6 +594,8 @@ class ESGEnvironment:
             quarterly_bonus=quarterly_bonus,
             synergy_bonus=synergy_bonus,
             task_completion_reward=task_completion_reward,
+            anti_cheat_penalty=anti_cheat_penalty,
+            format_compliance_reward=format_compliance_reward,
             total_reward=total,
         )
     

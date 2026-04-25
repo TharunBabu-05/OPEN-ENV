@@ -10,10 +10,13 @@ Tests all critical requirements for submission:
 """
 
 import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 import random
 from env import ESGEnvironment
 from tasks import TASKS, GRADERS, grade_task
 from models import Observation
+
 
 
 def test_environment_api():

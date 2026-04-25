@@ -1,0 +1,276 @@
+{
+  "mode": "random",
+  "model_path": null,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "timestamp": 1777092492.6132228,
+  "overall_mean_score": 0.6870082050456804,
+  "task_summary": {
+    "basic_compliance": {
+      "mean_score": 0.7403574392362081,
+      "max_score": 0.9082912184604695,
+      "min_score": 0.5127810992481551,
+      "n_episodes": 3
+    },
+    "aggressive_sustainability": {
+      "mean_score": 0.6431310203223486,
+      "max_score": 0.754689195969515,
+      "min_score": 0.578344848838714,
+      "n_episodes": 3
+    },
+    "carbon_neutral_excellence": {
+      "mean_score": 0.6775361555784846,
+      "max_score": 0.7081809861902617,
+      "min_score": 0.6514920843034178,
+      "n_episodes": 3
+    }
+  },
+  "episodes": [
+    {
+      "task_id": "basic_compliance",
+      "seed": 42,
+      "final_score": 0.7999999999999999,
+      "total_reward": 6.84515447410249,
+      "steps_taken": 6,
+      "final_obs": {
+        "carbon_reduction_pct": 61.38965971865632,
+        "renewable_pct": 32.750107552226666,
+        "diversity_score": 44.34152671727076,
+        "waste_recycled_pct": 44.5,
+        "budget_remaining": 85000.0,
+        "compliance_violations": 0,
+        "audit_score": 68.7476045735929
+      },
+      "reward_history": [
+        -0.30574076209262085,
+        1.8536489857576322,
+        0.4454217548027039,
+        0.4627220075280215,
+        1.0424077899606503,
+        3.3466946981461034
+      ]
+    },
+    {
+      "task_id": "basic_compliance",
+      "seed": 43,
+      "final_score": 0.9082912184604695,
+      "total_reward": 7.808721990509995,
+      "steps_taken": 6,
+      "final_obs": {
+        "carbon_reduction_pct": 55.16249073155319,
+        "renewable_pct": 39.46224322637053,
+        "diversity_score": 53.121841384535216,
+        "waste_recycled_pct": 43.0,
+        "budget_remaining": 140000.0,
+        "compliance_violations": 0,
+        "audit_score": 67.76589722811826
+      },
+      "reward_history": [
+        1.234059537257068,
+        0.8879307551137001,
+        1.3133516137397254,
+        0.5960793767631968,
+        1.572122114231873,
+        2.2051785934044315
+      ]
+    },
+    {
+      "task_id": "basic_compliance",
+      "seed": 44,
+      "final_score": 0.5127810992481551,
+      "total_reward": -3.102590945940945,
+      "steps_taken": 6,
+      "final_obs": {
+        "carbon_reduction_pct": 18.998127990582418,
+        "renewable_pct": 10.419720091045962,
+        "diversity_score": 45.486397341184926,
+        "waste_recycled_pct": 44.0,
+        "budget_remaining": 335000.0,
+        "compliance_violations": 2,
+        "audit_score": 49.83481074330613
+      },
+      "reward_history": [
+        -0.4321791742086122,
+        -0.8946214198510558,
+        -0.5701991266061274,
+        -0.27158252144774686,
+        -0.04979266214816479,
+        -0.8842160416792377
+      ]
+    },
+    {
+      "task_id": "aggressive_sustainability",
+      "seed": 42,
+      "final_score": 0.5963590161588168,
+      "total_reward": 4.201634634826306,
+      "steps_taken": 9,
+      "final_obs": {
+        "carbon_reduction_pct": 86.18985674159273,
+        "renewable_pct": 32.750107552226666,
+        "diversity_score": 45.521695679536684,
+        "waste_recycled_pct": 43.0,
+        "budget_remaining": 175000.0,
+        "compliance_violations": 0,
+        "audit_score": 68.72503409497578
+      },
+      "reward_history": [
+        -0.30574076209262085,
+        1.8536489857576322,
+        0.4454217548027039,
+        0.4627220075280215,
+        1.0424077899606503,
+        1.3466946981461037,
+        0.31407797961849115,
+        -0.21420456838545893,
+        -0.7433932505092167
+      ]
+    },
+    {
+      "task_id": "aggressive_sustainability",
+      "seed": 43,
+      "final_score": 0.754689195969515,
+      "total_reward": 10.105761268222125,
+      "steps_taken": 9,
+      "final_obs": {
+        "carbon_reduction_pct": 79.90286407922851,
+        "renewable_pct": 56.96224322637053,
+        "diversity_score": 54.3089293008658,
+        "waste_recycled_pct": 41.5,
+        "budget_remaining": 210000.0,
+        "compliance_violations": 0,
+        "audit_score": 70.56052070703855
+      },
+      "reward_history": [
+        1.234059537257068,
+        0.8879307551137001,
+        1.3133516137397254,
+        0.5960793767631968,
+        1.572122114231873,
+        0.20517859340443179,
+        0.13086814519701162,
+        0.6256606127327629,
+        3.540510519782355
+      ]
+    },
+    {
+      "task_id": "aggressive_sustainability",
+      "seed": 44,
+      "final_score": 0.578344848838714,
+      "total_reward": -2.00385906062197,
+      "steps_taken": 9,
+      "final_obs": {
+        "carbon_reduction_pct": 47.03423072633321,
+        "renewable_pct": 27.91972009104596,
+        "diversity_score": 47.19369412114126,
+        "waste_recycled_pct": 42.5,
+        "budget_remaining": 335000.0,
+        "compliance_violations": 0,
+        "audit_score": 66.28183613495973
+      },
+      "reward_history": [
+        -0.4321791742086122,
+        -0.8946214198510558,
+        -0.5701991266061274,
+        -0.27158252144774686,
+        -0.04979266214816479,
+        0.11578395832076223,
+        -0.2065189282969539,
+        -0.390741612472105,
+        0.6959924260880339
+      ]
+    },
+    {
+      "task_id": "carbon_neutral_excellence",
+      "seed": 42,
+      "final_score": 0.7081809861902617,
+      "total_reward": 10.65064068889383,
+      "steps_taken": 12,
+      "final_obs": {
+        "carbon_reduction_pct": 93.89069243575331,
+        "renewable_pct": 70.25010755222667,
+        "diversity_score": 48.698702678233126,
+        "waste_recycled_pct": 41.5,
+        "budget_remaining": 95000.0,
+        "compliance_violations": 0,
+        "audit_score": 74.56087849708675
+      },
+      "reward_history": [
+        -0.30574076209262085,
+        1.8536489857576322,
+        0.4454217548027039,
+        0.4627220075280215,
+        1.0424077899606503,
+        1.3466946981461037,
+        0.31407797961849115,
+        0.5857954316145411,
+        0.25660674949078327,
+        0.19524909407843688,
+        0.9974108911648472,
+        3.4563460688242404
+      ]
+    },
+    {
+      "task_id": "carbon_neutral_excellence",
+      "seed": 43,
+      "final_score": 0.6729353962417739,
+      "total_reward": 12.880354348414233,
+      "steps_taken": 12,
+      "final_obs": {
+        "carbon_reduction_pct": 90.37399760859508,
+        "renewable_pct": 64.46224322637053,
+        "diversity_score": 65.7871403935083,
+        "waste_recycled_pct": 40.0,
+        "budget_remaining": 380000.0,
+        "compliance_violations": 0,
+        "audit_score": 74.62089328727046
+      },
+      "reward_history": [
+        1.234059537257068,
+        0.8879307551137001,
+        1.3133516137397254,
+        0.5960793767631968,
+        1.572122114231873,
+        0.20517859340443179,
+        0.13086814519701162,
+        0.6256606127327629,
+        1.5405105197823552,
+        0.5078791411231891,
+        1.317327228439842,
+        2.949386710629077
+      ]
+    },
+    {
+      "task_id": "carbon_neutral_excellence",
+      "seed": 44,
+      "final_score": 0.6514920843034178,
+      "total_reward": 3.8715624408627187,
+      "steps_taken": 12,
+      "final_obs": {
+        "carbon_reduction_pct": 89.21336930902267,
+        "renewable_pct": 52.91972009104596,
+        "diversity_score": 46.89659326269405,
+        "waste_recycled_pct": 41.0,
+        "budget_remaining": 295000.0,
+        "compliance_violations": 0,
+        "audit_score": 71.78154851233516
+      },
+      "reward_history": [
+        -0.4321791742086122,
+        -0.8946214198510558,
+        -0.5701991266061274,
+        -0.27158252144774686,
+        -0.04979266214816479,
+        0.11578395832076223,
+        -0.2065189282969539,
+        -0.390741612472105,
+        1.695992426088034,
+        0.710501338828774,
+        0.5182608752096205,
+        3.646659287446294
+      ]
+    }
+  ]
+}

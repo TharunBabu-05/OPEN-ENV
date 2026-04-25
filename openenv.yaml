@@ -108,3 +108,32 @@ validation:
     enabled: true
     max_steps_override: 3
     description: "Quick validation with reduced steps for faster testing"
+
+training:
+  description: "GRPO reinforcement learning with verifiable rewards"
+  stack:
+    - "TRL (GRPOTrainer)"
+    - "Unsloth (4-bit LoRA)"
+    - "ESGEnvironment (verifiable reward)"
+  entry_point: "train_rl.py"
+  config_file: "train_config.yaml"
+  smoke_test_command: "python train_rl.py --smoke_test"
+  dataset_builder: "dataset_builder.py"
+  reward_functions: "reward_functions.py"
+  num_reward_functions: 4
+  anti_cheat_enabled: true
+  curriculum:
+    - task_id: basic_compliance
+      difficulty: easy
+      recommended_first: true
+    - task_id: aggressive_sustainability
+      difficulty: medium
+    - task_id: carbon_neutral_excellence
+      difficulty: hard
+
+demo:
+  terminal_demo: "python demo_script.py"
+  benchmark: "python run_benchmark.ps1"
+  space_app: "space_app.py"
+  colab_notebook: "colab_train.ipynb"
+
