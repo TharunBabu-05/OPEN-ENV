@@ -1,71 +1,33 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+"""
+server/app.py — Canonical entrypoint shim.
 
-from env import ESGEnvironment
-from tasks import TASKS
+All API logic lives in the top-level app.py (hardened, session-based,
+thread-safe). This module simply re-exports the FastAPI app and provides
+the `main()` launcher so the pyproject.toml script entrypoint continues
+to work unchanged.
 
+Why a shim instead of duplicating logic:
+- Single source of truth for session management, timeouts, and budget warnings.
+- Any entrypoint (uvicorn direct, `server` script, Docker CMD) gets identical semantics.
+- No global mutable env state — all state is per-session UUID.
+"""
 
-app = FastAPI(title="ESG Compliance Environment API")
+import sys
+from pathlib import Path
 
-# Default task so /step works after startup without explicit task selection.
-env = ESGEnvironment(task_config=TASKS["basic_compliance"])
+# Ensure the project root is importable when launched as a package entrypoint.
+_root = Path(__file__).resolve().parent.parent
+if str(_root) not in sys.path:
+    sys.path.insert(0, str(_root))
 
-
-class StepRequest(BaseModel):
-    action: int = Field(..., ge=0, le=8)
-
-
-@app.get("/")
-def root():
-    return {
-        "message": "ESG Environment Running",
-        "available_tasks": list(TASKS.keys()),
-        "default_task": "basic_compliance",
-    }
-
-
-@app.post("/reset")
-def reset(task_id: str = "basic_compliance", seed: int = 42):
-    if task_id not in TASKS:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Unknown task_id '{task_id}'. Available: {list(TASKS.keys())}",
-        )
-
-    global env
-    env = ESGEnvironment(task_config=TASKS[task_id], seed=seed)
-    obs = env.reset()
-    return obs.model_dump()
-
-
-@app.post("/step")
-def step(payload: StepRequest):
-    try:
-        observation, reward, terminated, truncated, info = env.step(payload.action)
-    except RuntimeError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
-
-    return {
-        "observation": observation.model_dump(),
-        "reward": reward,
-        "terminated": terminated,
-        "truncated": truncated,
-        "info": info,
-    }
-
-
-@app.get("/state")
-def state():
-    try:
-        return env.state().model_dump()
-    except RuntimeError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
+# Re-export the hardened app from top-level app.py.
+from app import app  # noqa: F401  (re-export for uvicorn "server.app:app")
 
 
 def main() -> None:
+    """CLI entrypoint — launched via `server` script in pyproject.toml."""
     import uvicorn
-
-    uvicorn.run("server.app:app", host="0.0.0.0", port=7860)
+    uvicorn.run("server.app:app", host="0.0.0.0", port=7860, reload=False)
 
 
 if __name__ == "__main__":

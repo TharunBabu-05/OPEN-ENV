@@ -49,14 +49,16 @@ Run this checklist:
 # 1. Check what will be committed
 git status
 
-# 2. Verify no sensitive files
+# 2. Verify no sensitive files are staged
 git status --ignored
 
 # 3. Review changes
-git diff
+git diff --cached
 
-# 4. Use the secure push script
-.\push_secure.ps1
+# 4. Commit and push
+git add -A
+git commit -m "chore: update"
+git push origin main
 ```
 
 ## 🔍 How to Verify
