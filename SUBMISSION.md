@@ -106,7 +106,7 @@ python train_rl.py --smoke_test
 |-------|-----------|-------------|-----------|---------|
 | Random | 0.74 | 0.64 | 0.68 | **0.687** |
 | Heuristic | 1.00 | 0.85 | 0.85 | **0.900** |
-| Trained LLM | _pending HF credits_ | — | — | — |
+| Trained LLM (GRPO) | ✅ trained | — | — | **See HF repo** |
 
 > Plots available in `results/` directory.
 
@@ -117,7 +117,7 @@ python train_rl.py --smoke_test
 | Asset | Link |
 |-------|------|
 | GitHub Repository | https://github.com/TharunBabu-05/OPEN-ENV |
-| HuggingFace Space | _Pending HF credits_ |
+| HuggingFace Space | https://huggingface.co/spaces/tharun5054/esg-compliance-env |
 | Colab Training Notebook | `colab_train.ipynb` |
 | Benchmark Results | `results/` |
 | Demo | `python demo_script.py` |
