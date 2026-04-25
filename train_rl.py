@@ -291,7 +291,11 @@ def train(cfg: Dict):
     output_dir = Path(cfg["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    training_args = GRPOConfig(
+    # Build kwargs compatible with both old and new TRL versions
+    import inspect
+    grpo_params = set(inspect.signature(GRPOConfig.__init__).parameters.keys())
+
+    grpo_kwargs = dict(
         output_dir=str(output_dir),
         learning_rate=cfg["learning_rate"],
         num_train_epochs=cfg["num_train_epochs"],
@@ -299,23 +303,39 @@ def train(cfg: Dict):
         per_device_train_batch_size=cfg["per_device_train_batch_size"],
         gradient_accumulation_steps=cfg["gradient_accumulation_steps"],
         num_generations=cfg["num_generations"],
-        max_new_tokens=cfg["max_new_tokens"],
         temperature=cfg["temperature"],
         logging_steps=cfg["logging_steps"],
         save_steps=cfg["save_steps"],
-        report_to="none",           # Disable wandb/tensorboard by default
-        remove_unused_columns=False, # Keep our custom columns
-        log_completions=True,        # See what the model generates
+        report_to="none",
+        remove_unused_columns=False,
         seed=42,
     )
 
-    trainer = GRPOTrainer(
+    # Handle renamed params across TRL versions
+    if "max_completion_length" in grpo_params:
+        grpo_kwargs["max_completion_length"] = cfg["max_new_tokens"]
+    elif "max_new_tokens" in grpo_params:
+        grpo_kwargs["max_new_tokens"] = cfg["max_new_tokens"]
+
+    if "log_completions" in grpo_params:
+        grpo_kwargs["log_completions"] = True
+
+    training_args = GRPOConfig(**grpo_kwargs)
+
+    # Build trainer kwargs (newer TRL uses processing_class instead of tokenizer)
+    trainer_params = set(inspect.signature(GRPOTrainer.__init__).parameters.keys())
+    trainer_kwargs = dict(
         model=model,
-        tokenizer=tokenizer,
         reward_funcs=reward_fn,
         args=training_args,
         train_dataset=dataset,
     )
+    if "processing_class" in trainer_params:
+        trainer_kwargs["processing_class"] = tokenizer
+    else:
+        trainer_kwargs["tokenizer"] = tokenizer
+
+    trainer = GRPOTrainer(**trainer_kwargs)
 
     # 5. Train
     log.info("Starting GRPO training...")
