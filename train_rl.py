@@ -309,6 +309,8 @@ def train(cfg: Dict):
         report_to="none",
         remove_unused_columns=False,
         seed=42,
+        bf16=False,
+        fp16=True,
     )
 
     # Handle renamed params across TRL versions
