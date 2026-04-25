@@ -1,0 +1,46 @@
+# train_config_fast.yaml — Emergency fast-training config
+# Optimized for Colab T4 free tier, ~45-60 min total run time
+# Uses smallest capable model for fastest iteration
+
+# ── Model (0.5B = fastest, still produces measurable RL signal) ──────────────
+base_model: "unsloth/Qwen2.5-0.5B-Instruct"
+max_seq_length: 512
+load_in_4bit: true
+lora_r: 8           # Smaller rank = fewer params = faster
+lora_alpha: 16
+lora_dropout: 0.05
+target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# ── Training ──────────────────────────────────────────────────────────────────
+task_ids:
+  - basic_compliance       # Easiest task first (warm reward signal guaranteed)
+
+n_episodes_per_task: 5     # Small dataset = fast generation
+
+learning_rate: 5.0e-6
+num_train_epochs: 1
+max_steps: 150             # ~45 min on T4; shows clear learning curve
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 4
+
+# GRPO-specific
+num_generations: 4         # 4 rollouts per prompt
+max_new_tokens: 128
+temperature: 0.7
+
+# ── Output ────────────────────────────────────────────────────────────────────
+output_dir: "outputs/esg_rl_fast"
+logging_steps: 5           # Log frequently to see progress
+save_steps: 50
+
+# ── Flags ─────────────────────────────────────────────────────────────────────
+smoke_test: false
+use_unsloth: true
+cpu_only: false
