@@ -337,6 +337,10 @@ def train(cfg: Dict):
     else:
         trainer_kwargs["tokenizer"] = tokenizer
 
+    # Patch: TRL expects model.warnings_issued which PeftModel lacks
+    if not hasattr(model, "warnings_issued"):
+        model.warnings_issued = {}
+
     trainer = GRPOTrainer(**trainer_kwargs)
 
     # 5. Train
