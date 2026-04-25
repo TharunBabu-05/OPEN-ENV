@@ -49,12 +49,24 @@ sys.path.insert(0, str(Path(__file__).parent))
 import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
+# ---------------------------------------------------------------------------
+# Compatibility shim: llm_blender (required by trl.trainer.judges) uses
+# pydantic v1 APIs (collect_definitions) which were removed in pydantic v2.
+# We never use judge functionality, so mocking is safe and avoids the crash.
+# ---------------------------------------------------------------------------
+try:
+    import llm_blender  # noqa: F401 — try real import first
+except Exception:
+    from unittest.mock import MagicMock
+    sys.modules["llm_blender"] = MagicMock()
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 log = logging.getLogger(__name__)
+
 
 # ---------------------------------------------------------------------------
 # Config defaults
