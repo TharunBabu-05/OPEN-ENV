@@ -51,15 +51,17 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 # ---------------------------------------------------------------------------
 # Compatibility shim: llm_blender and vllm are optional TRL deps that use
-# pydantic v1 APIs (collect_definitions) removed in pydantic v2.
-# We never use judge/vllm functionality, so mocking is safe.
+# pydantic v1 APIs removed in pydantic v2. Using types.ModuleType (not
+# MagicMock) so importlib.util.find_spec() doesn't raise ValueError on __spec__.
 # ---------------------------------------------------------------------------
-for _optional_dep in ["llm_blender", "vllm"]:
+import types as _types
+for _dep in ["llm_blender", "vllm"]:
     try:
-        __import__(_optional_dep)
+        __import__(_dep)
     except Exception:
-        from unittest.mock import MagicMock
-        sys.modules[_optional_dep] = MagicMock()
+        _mod = _types.ModuleType(_dep)
+        _mod.__spec__ = None
+        sys.modules[_dep] = _mod
 
 logging.basicConfig(
     level=logging.INFO,
