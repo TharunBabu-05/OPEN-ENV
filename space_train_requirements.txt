@@ -1,0 +1,12 @@
+unsloth
+trl
+peft
+datasets
+pyyaml
+gradio
+huggingface_hub
+weave
+torch
+transformers
+accelerate
+bitsandbytes

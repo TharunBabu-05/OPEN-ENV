@@ -1,0 +1,69 @@
+# ============================================================
+# A100-Optimized GRPO Training Config
+# Target: NVIDIA A100 Large (80GB VRAM)
+# ============================================================
+
+# Model
+base_model: "unsloth/Qwen2.5-0.5B-Instruct"
+max_seq_length: 1024
+load_in_4bit: true
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+use_unsloth: true
+
+# A100 Precision & Performance
+precision: "bf16"
+cpu_only: false
+torch_compile: false  # disable for LoRA compat
+
+# Curriculum stages (task progression)
+curriculum:
+  - stage: 1
+    task_ids: ["basic_compliance"]
+    steps: 300
+    n_episodes_per_task: 40
+  - stage: 2
+    task_ids: ["aggressive_sustainability"]
+    steps: 400
+    n_episodes_per_task: 40
+  - stage: 3
+    task_ids: ["carbon_neutral_excellence"]
+    steps: 300
+    n_episodes_per_task: 40
+
+# GRPO Settings (A100-optimized)
+learning_rate: 1.2e-5
+num_train_epochs: 1
+max_steps: 1000
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 8
+num_generations: 8
+max_new_tokens: 256
+temperature: 0.7
+top_p: 0.9
+max_grad_norm: 1.0
+
+# Logging & Checkpointing
+logging_steps: 10
+save_steps: 100
+output_dir: "outputs/grpo_step_1000_a100_new"
+
+# Dataset expansion
+dataset_size: 350
+dataset_strategy:
+  heuristic_pct: 60
+  random_pct: 25
+  adversarial_pct: 15
+
+# Reward adjustments
+reward_weights:
+  env_outcome: 0.55
+  format_compliance: 0.15
+  anti_cheat: 0.10
+  task_progress: 0.10
+  waste_boost: 0.05
+  synergy_bonus: 0.05
+
+# Smoke test
+smoke_test: false
