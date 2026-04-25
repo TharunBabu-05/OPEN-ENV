@@ -31,16 +31,43 @@ from tasks import TASKS, grade_task
 # Utility: parse action from LLM completion
 # ---------------------------------------------------------------------------
 
-def _parse_action(completion: str) -> Optional[int]:
+def _normalize_to_str(completion) -> str:
+    """Normalize any completion format to a plain string."""
+    if isinstance(completion, str):
+        return completion
+    if isinstance(completion, list):
+        parts = []
+        for item in completion:
+            if isinstance(item, dict):
+                parts.append(item.get("content", str(item)))
+            else:
+                parts.append(str(item))
+        return " ".join(parts)
+    return str(completion)
+
+
+def _extract_dict(data) -> Optional[dict]:
+    """Extract a dict from parsed JSON (handles list wrapping)."""
+    if isinstance(data, dict):
+        return data
+    if isinstance(data, list) and len(data) > 0:
+        for item in data:
+            if isinstance(item, dict):
+                return item
+    return None
+
+
+def _parse_action(completion) -> Optional[int]:
     """
     Extract action integer from LLM output.
 
     Handles:
     - Pure JSON: {"action": 3, "reasoning": "..."}
     - Markdown-wrapped JSON: ```json\n{...}\n```
+    - List-wrapped JSON: [{"action": 3}]
     - Bare integer fallback
     """
-    text = completion.strip()
+    text = _normalize_to_str(completion).strip()
 
     # Strip markdown code fences
     if "```json" in text:
@@ -50,10 +77,12 @@ def _parse_action(completion: str) -> Optional[int]:
 
     # Try JSON parse
     try:
-        data = json.loads(text)
-        action = int(data["action"])
-        if 0 <= action <= 8:
-            return action
+        raw = json.loads(text)
+        data = _extract_dict(raw)
+        if data and "action" in data:
+            action = int(data["action"])
+            if 0 <= action <= 8:
+                return action
     except (json.JSONDecodeError, KeyError, ValueError, TypeError):
         pass
 
@@ -122,7 +151,7 @@ def reward_env_outcome(
 # ---------------------------------------------------------------------------
 
 def reward_format_compliance(
-    completions: List[str],
+    completions,
     **kwargs,
 ) -> List[float]:
     """
@@ -132,7 +161,7 @@ def reward_format_compliance(
     rewards = []
 
     for completion in completions:
-        text = completion.strip()
+        text = _normalize_to_str(completion).strip()
 
         # Strip markdown
         if "```json" in text:
@@ -141,7 +170,11 @@ def reward_format_compliance(
             text = text.split("```")[1].split("```")[0].strip()
 
         try:
-            data = json.loads(text)
+            raw = json.loads(text)
+            data = _extract_dict(raw)
+            if data is None:
+                rewards.append(0.0)
+                continue
             action = int(data.get("action", -1))
             has_reasoning = bool(data.get("reasoning", "").strip())
 
@@ -151,7 +184,7 @@ def reward_format_compliance(
                 rewards.append(0.5)   # Valid action, no reasoning
             else:
                 rewards.append(0.0)   # Invalid action value
-        except (json.JSONDecodeError, TypeError, ValueError):
+        except (json.JSONDecodeError, TypeError, ValueError, AttributeError):
             rewards.append(0.0)
 
     return rewards
@@ -164,7 +197,7 @@ def reward_format_compliance(
 # ---------------------------------------------------------------------------
 
 def reward_anti_cheat(
-    completions: List[str],
+    completions,
     obs_snapshots: List[Dict[str, Any]],
     **kwargs,
 ) -> List[float]:
@@ -179,11 +212,11 @@ def reward_anti_cheat(
 
     for completion, obs_dict in zip(completions, obs_snapshots):
         action = _parse_action(completion)
-        budget = obs_dict.get("available_budget", 0.0)
-        actions_taken = obs_dict.get("actions_taken", [])
+        budget = obs_dict.get("available_budget", 0.0) if isinstance(obs_dict, dict) else 0.0
+        actions_taken = obs_dict.get("actions_taken", []) if isinstance(obs_dict, dict) else []
 
         if action is None:
-            rewards.append(0.0)  # Format reward handles this
+            rewards.append(0.0)
             continue
 
         penalty = 0.0
