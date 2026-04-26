@@ -26,7 +26,7 @@ library_name: peft
 
 <!-- Animated Typing -->
 <a href="https://github.com/TharunBabu-05/OPEN-ENV">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1000&color=00D9FF&center=true&vCenter=true&width=650&lines=🌍+Corporate+ESG+Sustainability+Strategist;🤖+GRPO+%2B+Curriculum+Learning+%2B+A100;📈+Beats+Heuristic+Baseline+on+Medium+Task!" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1000&color=00D9FF&center=true&vCenter=true&width=700&lines=Corporate+ESG+Sustainability+Strategist;GRPO+%2B+Curriculum+Learning+%2B+A100;Beats+Heuristic+Baseline+on+Medium+Task!" alt="Typing SVG" />
 </a>
 
 <br/>
@@ -54,16 +54,27 @@ This is a **LoRA adapter** on top of `unsloth/Qwen2.5-0.5B-Instruct`, trained wi
 
 The agent acts as a **corporate sustainability strategist**, choosing monthly interventions to hit ESG targets within a fixed budget. The challenge: actions have **delayed compound effects** (e.g. solar panels take months to pay off), requiring multi-step reasoning.
 
-```
- INPUT STATE                      MODEL OUTPUT
- ────────────────────────────── ──────────────────────────────────────
- Carbon Emissions : 1200 tons  {
- Renewable Energy : 12%           "action": 0,
- Available Budget : $500K          "reasoning": "Installing solar now
- Month            : 1 of 6         gives 6 months of renewable boost.
-                                   Best ROI for our 30% target."
-                               }
-```
+<br/>
+
+<table align="center">
+<tr>
+  <td colspan="2" align="center"><b>🔄 ESG RL ENVIRONMENT LOOP</b></td>
+</tr>
+<tr>
+  <td align="center" width="280"><b>🏢 Company State</b></td>
+  <td align="center" width="300"><b>🤖 LLM Agent</b></td>
+</tr>
+<tr>
+  <td>• Carbon: 1200 tons<br/>• Renewable: 12%<br/>• Budget: $500K<br/>• Month: 1/6</td>
+  <td><pre>{"action": 0,
+ "reasoning": 
+ "Installing solar now
+ gives 6 months of
+ renewable boost."}</pre></td>
+</tr>
+</table>
+
+<br/>
 
 ---
 
