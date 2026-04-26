@@ -55,14 +55,14 @@ This is a **LoRA adapter** on top of `unsloth/Qwen2.5-0.5B-Instruct`, trained wi
 The agent acts as a **corporate sustainability strategist**, choosing monthly interventions to hit ESG targets within a fixed budget. The challenge: actions have **delayed compound effects** (e.g. solar panels take months to pay off), requiring multi-step reasoning.
 
 ```
-🏭 INPUT STATE                    🤖 MODEL OUTPUT
-──────────────────────────────    ────────────────────────────────────
-Carbon Emissions: 1200 tons  ──►  {
-Renewable Energy: 12%             "action": 0,
-Available Budget: $500K           "reasoning": "Installing solar now gives
-Month: 1 of 6                      6 months of renewable boost. Best ROI
-                                   given our 30% renewable target."
-                              ──►  }
+ INPUT STATE                      MODEL OUTPUT
+ ────────────────────────────── ──────────────────────────────────────
+ Carbon Emissions : 1200 tons  {
+ Renewable Energy : 12%           "action": 0,
+ Available Budget : $500K          "reasoning": "Installing solar now
+ Month            : 1 of 6         gives 6 months of renewable boost.
+                                   Best ROI for our 30% target."
+                               }
 ```
 
 ---
@@ -84,10 +84,10 @@ Month: 1 of 6                      6 months of renewable boost. Best ROI
 ### 📈 Gains Over Random
 
 ```
-Easy Task    ████████████████████████████████████  +35.1%  (0.740 → 1.000)
-Medium Task  ██████████████████████████████████████ +36.8% (0.643 → 0.880) ← Beats heuristic!
-Hard Task    ████████░                              +7.1%  (0.678 → 0.726)
-Overall      ████████████████████████████░          +26.5% (0.687 → 0.869)
+Easy   (0.740->1.000) [##################################]  +35.1%
+Medium (0.643->0.880) [####################################]  +36.8%  <- beats heuristic!
+Hard   (0.678->0.726) [######]                               +7.1%
+All    (0.687->0.869) [############################]         +26.5%
 ```
 
 ---
@@ -120,11 +120,11 @@ Overall      ██████████████████████�
 ### 📅 3-Stage Curriculum
 
 ```
-Step 0 ──── Step 50 ──── Step 110 ──── Step 150
-   │             │             │             │
-   │  🟢 EASY    │  🟡 MEDIUM  │  🔴 HARD    │
-   │  50 steps   │  60 steps   │  40 steps   │
-   └─────────────┴─────────────┴─────────────┘
+Step 0 --------- Step 50 --------- Step 110 --------- Step 150
+  |                  |                  |                  |
+  |   [EASY]         |   [MEDIUM]       |   [HARD]         |
+  |   50 steps       |   60 steps       |   40 steps       |
+  +------------------+------------------+------------------+
 ```
 
 ---

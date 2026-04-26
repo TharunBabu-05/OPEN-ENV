@@ -49,18 +49,18 @@
 ## ⚡ At a Glance
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                   ESG RL ENVIRONMENT LOOP                       │
-│                                                                 │
-│   🏭 Company State          🤖 LLM Agent            ✅ Results  │
-│   ─────────────────         ──────────────         ──────────── │
-│   Carbon: 1200 tons   ───►  {"action": 0,    ───►  Carbon -53% │
-│   Renewable: 12%            "reasoning":          Renewable 33% │
-│   Budget: $500K             "Solar maximizes      Budget: $350K │
-│   Month: 1/6                long-term ROI"}       Score: 1.000  │
-│                                                                 │
-│                      ↑ GRPO trains this ↑                       │
-└─────────────────────────────────────────────────────────────────┘
++---------------------------------------------------------------+
+|                 ESG RL ENVIRONMENT LOOP                       |
+|                                                               |
+|  Company State          LLM Agent              Results        |
+|  ----------------       ---------------        -----------    |
+|  Carbon: 1200 tons -->  {"action": 0,   -->   Carbon -53%   |
+|  Renewable: 12%         "reasoning":           Renewable 33%  |
+|  Budget: $500K          "Solar maximizes       Budget: $350K  |
+|  Month: 1/6             long-term ROI"}        Score: 1.000   |
+|                                                               |
+|                    ^ GRPO trains this ^                        |
++---------------------------------------------------------------+
 ```
 
 <div align="center">
@@ -186,14 +186,14 @@ OPEN-ENV/
 <div align="center">
 
 ```
-🟢 EASY ──────────────────────────────────────────────────────────► 🔴 HARD
+[EASY] --------> [MEDIUM] --------> [HARD]
 
-basic_compliance          aggressive_sustainability    carbon_neutral_excellence
-━━━━━━━━━━━━━━━━━        ━━━━━━━━━━━━━━━━━━━━━━━━    ━━━━━━━━━━━━━━━━━━━━━━━━━
-6 steps | $500K           9 steps | $750K              12 steps | $1.2M
--15% carbon               -40% carbon                  -90% carbon
-30% renewable             60% renewable                80% renewable
-                          70% recycling                ALL metrics
+basic_compliance     aggressive_sustainability  carbon_neutral_excellence
+-----------------    ------------------------  -------------------------
+6 steps | $500K      9 steps | $750K           12 steps | $1.2M
+-15% carbon          -40% carbon               -90% carbon
+30% renewable        60% renewable             80% renewable
+                     70% recycling             ALL metrics
 ```
 
 </div>
@@ -206,35 +206,35 @@ basic_compliance          aggressive_sustainability    carbon_neutral_excellence
 
 ```
          DATASET (350 samples)
-         ┌─────────────────────────────────┐
-         │  60% Heuristic rollouts         │
-         │  25% Random exploration         │
-         │  15% Adversarial edge cases     │
-         └──────────────┬──────────────────┘
-                        │
-                        ▼
-         ┌──────────────────────────────────┐
-         │     LLM generates JSON action    │
-         │  {"action": 0, "reasoning": ...} │
-         └──────────────┬───────────────────┘
-                        │
-                        ▼
-         ┌──────────────────────────────────────────────┐
-         │            REWARD FUNCTIONS                  │
-         │  ┌─────────────────────┬──────────────────┐  │
-         │  │ env_outcome   (45%) │ format_comply(25%)│  │
-         │  │ anti_cheat    (15%) │ task_progress(15%)│  │
-         │  └─────────────────────┴──────────────────┘  │
-         └──────────────┬───────────────────────────────┘
-                        │
-                        ▼
-         ┌──────────────────────────────────┐
-         │   TRL GRPOTrainer + Unsloth      │
-         │   Qwen2.5-0.5B  |  bf16  |  A100 │
-         │   LoRA r=16, α=32, lr=8e-6        │
-         └──────────────┬───────────────────┘
-                        │
-                        ▼
+         +---------------------------------+
+         |  60% Heuristic rollouts         |
+         |  25% Random exploration         |
+         |  15% Adversarial edge cases     |
+         +--------------+------------------+
+                        |
+                        v
+         +----------------------------------+
+         |     LLM generates JSON action    |
+         |  {"action": 0, "reasoning": ...} |
+         +--------------+-------------------+
+                        |
+                        v
+         +----------------------------------------------+
+         |            REWARD FUNCTIONS                  |
+         |  +---------------------+------------------+  |
+         |  | env_outcome   (45%) | format_comply(25%)|  |
+         |  | anti_cheat    (15%) | task_progress(15%)|  |
+         |  +---------------------+------------------+  |
+         +--------------+-------------------------------+
+                        |
+                        v
+         +----------------------------------+
+         |   TRL GRPOTrainer + Unsloth      |
+         |   Qwen2.5-0.5B  |  bf16  |  A100 |
+         |   LoRA r=16, a=32, lr=8e-6        |
+         +--------------+-------------------+
+                        |
+                        v
          🤗 tharun5054/esg-rl-agent-grpo
 ```
 
@@ -245,15 +245,14 @@ basic_compliance          aggressive_sustainability    carbon_neutral_excellence
 <div align="center">
 
 ```
-Step 0 ────── Step 50 ────── Step 110 ────── Step 150
-   │               │               │               │
-   │  🟢 EASY      │  🟡 MEDIUM    │  🔴 HARD      │
-   │  basic        │  aggressive   │  carbon       │
-   │  compliance   │  sustain.     │  neutral      │
-   │  50 steps     │  60 steps     │  40 steps     │
-   └───────────────┴───────────────┴───────────────┘
-   
-   Cost: ~$4.50 | Time: ~40 min | GPU: A100 80GB
+Step 0 --------- Step 50 --------- Step 110 --------- Step 150
+  |                   |                  |                  |
+  |   [EASY]          |   [MEDIUM]       |   [HARD]         |
+  |   basic_comp.     |   aggressive     |   carbon_neutral  |
+  |   50 steps        |   60 steps       |   40 steps       |
+  +-------------------+------------------+------------------+
+
+  Cost: ~$4.50  |  Time: ~40 min  |  GPU: A100 80GB
 ```
 
 </div>
@@ -281,10 +280,10 @@ Step 0 ────── Step 50 ────── Step 110 ──────
 <div align="center">
 
 ```
-Easy Task   ██████████████████████████████████░  +35.1%  (0.740 → 1.000)
-Medium Task ████████████████████████████████████  +36.8%  (0.643 → 0.880) ← BEATS HEURISTIC
-Hard Task   ███████░                              +7.1%   (0.678 → 0.726)
-Overall     ████████████████████████████░         +26.5%  (0.687 → 0.869)
+Easy   (0.740->1.000) [##################################]  +35.1%
+Medium (0.643->0.880) [####################################]  +36.8%  <- BEATS HEURISTIC!
+Hard   (0.678->0.726) [######]                               +7.1%
+All    (0.687->0.869) [############################]         +26.5%
 ```
 
 </div>
