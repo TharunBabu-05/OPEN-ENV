@@ -5,7 +5,7 @@
 
 <!-- Animated Title -->
 <a href="https://github.com/TharunBabu-05/OPEN-ENV">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=28&pause=1000&color=00D9FF&center=true&vCenter=true&width=700&lines=🌍+ESG+Compliance+RL+Environment;🤖+Train+LLM+Agents+with+GRPO;🚀+A100+GPU+Curriculum+Learning;📊+Beat+Heuristic+Baselines!" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=26&pause=1000&color=00D9FF&center=true&vCenter=true&width=750&lines=ESG+Compliance+RL+Environment;Train+LLM+Agents+with+GRPO;A100+GPU+Curriculum+Learning;Beat+Heuristic+Baselines+with+RL!" alt="Typing SVG" />
 </a>
 
 <br/>
@@ -48,6 +48,8 @@
 
 ## ⚡ At a Glance
 
+<div align="center">
+
 ```
 +------------------------------------------------------------------+
 |                  ESG RL ENVIRONMENT LOOP                         |
@@ -63,19 +65,21 @@
 +------------------------------------------------------------------+
 ```
 
-<div align="center">
+<br/>
+
 <table>
 <tr>
-<td align="center"><b>🎯 Score vs Heuristic</b></td>
-<td align="center"><b>💡 Key Innovation</b></td>
-<td align="center"><b>⚙️ Training</b></td>
+  <td align="center" width="260"><b>🎯 Score vs Heuristic</b></td>
+  <td align="center" width="260"><b>💡 Key Innovation</b></td>
+  <td align="center" width="260"><b>⚙️ Training</b></td>
 </tr>
 <tr>
-<td align="center">Medium task: <b>0.880 vs 0.847</b><br/><i>+3.9% over baseline!</i></td>
-<td align="center">No LLM judge —<br/><b>4 verifiable rewards</b></td>
-<td align="center">150 steps, 3-stage<br/><b>A100 curriculum</b></td>
+  <td align="center">Medium task: <b>0.880 vs 0.847</b><br/><i>+3.9% over heuristic baseline!</i></td>
+  <td align="center">No LLM judge —<br/><b>4 verifiable reward signals</b></td>
+  <td align="center">150 steps, 3-stage<br/><b>A100 curriculum (~$4.50)</b></td>
 </tr>
 </table>
+
 </div>
 
 ---
