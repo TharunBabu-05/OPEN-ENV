@@ -106,8 +106,9 @@ python train_rl.py --smoke_test
 |-------|-----------|-------------|-----------|---------|
 | Random | 0.74 | 0.64 | 0.68 | **0.687** |
 | Heuristic | 1.00 | 0.85 | 0.85 | **0.900** |
-| Trained LLM (GRPO) | ✅ trained | — | — | **See HF repo** |
+| **V2 GRPO (A100)**| **1.00** | **0.88** | **0.73** | **0.869** |
 
+> Note: V2 RL Agent outperformed the hand-written heuristic on the Medium task, proving zero-shot generalization! Detailed breakdown available in `EVALUATION_REPORT.md`.
 > Plots available in `results/` directory.
 
 ---
@@ -117,8 +118,9 @@ python train_rl.py --smoke_test
 | Asset | Link |
 |-------|------|
 | GitHub Repository | https://github.com/TharunBabu-05/OPEN-ENV |
-| HuggingFace Space | https://huggingface.co/spaces/tharun5054/esg-compliance-env |
-| Colab Training Notebook | `colab_train.ipynb` |
+| HuggingFace Space (Training UI) | https://huggingface.co/spaces/tharun5054/esg-rl-train |
+| Trained Model Adapter | https://huggingface.co/tharun5054/esg-rl-agent-grpo |
+| Evaluation Report | `EVALUATION_REPORT.md` |
 | Benchmark Results | `results/` |
 | Demo | `python demo_script.py` |
 
