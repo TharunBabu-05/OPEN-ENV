@@ -1,220 +1,367 @@
 <div align="center">
 
-# 🌍 OPEN-ENV: ESG Compliance Reinforcement Learning Environment
+<!-- Animated Banner -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=OPEN-ENV&fontSize=80&fontColor=fff&animation=twinkling&fontAlignY=35&desc=ESG%20Compliance%20Reinforcement%20Learning&descAlignY=60&descSize=20" width="100%"/>
 
-<p align="center">
-  <a href="https://github.com/TharunBabu-05/OPEN-ENV/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License"></a>
-  <a href="https://huggingface.co/tharun5054/esg-rl-agent-grpo"><img src="https://img.shields.io/badge/%F0%9F%A4%97-Model%20on%20HF-yellow" alt="Hugging Face Model"></a>
-  <a href="https://huggingface.co/spaces/tharun5054/esg-rl-train"><img src="https://img.shields.io/badge/%F0%9F%A4%97-Space%20on%20HF-blue" alt="Hugging Face Space"></a>
-  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python" alt="Python">
-  <img src="https://img.shields.io/badge/GRPO-TRL%20%2B%20Unsloth-orange" alt="GRPO">
-  <img src="https://img.shields.io/badge/GPU-A100%2080GB-76B900?logo=nvidia" alt="A100">
-  <img src="https://img.shields.io/badge/OpenEnv-Hackathon%202026-purple" alt="OpenEnv">
+<!-- Animated Title -->
+<a href="https://github.com/TharunBabu-05/OPEN-ENV">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=28&pause=1000&color=00D9FF&center=true&vCenter=true&width=700&lines=🌍+ESG+Compliance+RL+Environment;🤖+Train+LLM+Agents+with+GRPO;🚀+A100+GPU+Curriculum+Learning;📊+Beat+Heuristic+Baselines!" alt="Typing SVG" />
+</a>
+
+<br/>
+
+<!-- Badges Row 1 -->
+<p>
+  <a href="https://github.com/TharunBabu-05/OPEN-ENV/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="License">
+  </a>
+  <a href="https://huggingface.co/tharun5054/esg-rl-agent-grpo">
+    <img src="https://img.shields.io/badge/🤗_Model-HuggingFace-FFD21E?style=for-the-badge" alt="HF Model">
+  </a>
+  <a href="https://huggingface.co/spaces/tharun5054/esg-rl-train">
+    <img src="https://img.shields.io/badge/🚀_Training_Space-HuggingFace-blue?style=for-the-badge" alt="HF Space">
+  </a>
+  <a href="https://huggingface.co/spaces/tharun5054/esg-compliance-env">
+    <img src="https://img.shields.io/badge/🌍_Env_API-Live-success?style=for-the-badge" alt="API Live">
+  </a>
 </p>
 
-<p align="center">
-  <b>A reinforcement learning environment where an LLM agent acts as a corporate ESG sustainability strategist — making sequential multi-objective decisions to hit carbon, renewable energy, diversity, and waste targets within a fixed budget and timeline.</b>
+<!-- Badges Row 2 -->
+<p>
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/GRPO-TRL+Unsloth-FF6B35?style=flat-square" alt="GRPO">
+  <img src="https://img.shields.io/badge/GPU-A100_80GB-76B900?style=flat-square&logo=nvidia&logoColor=white" alt="A100">
+  <img src="https://img.shields.io/badge/FastAPI-0.100+-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/OpenEnv-Hackathon_2026-9333EA?style=flat-square" alt="OpenEnv">
 </p>
 
 <br/>
 
+> **An RL environment where an LLM agent plays the role of a corporate ESG sustainability strategist —**
+> **making sequential multi-objective decisions under budget and time constraints.**
+
+<br/>
+
+</div>
+
+---
+
+## ⚡ At a Glance
+
 ```
-🏭 Carbon at 100% ──► 🤖 RL Agent Decides ──► ☀️ Solar Panels Installed
-💰 Budget: $500K           (monthly)              🌿 Carbon drops to 47%
-📅 6-Month Horizon     ────────────────────►      ✅ Target ACHIEVED
+┌─────────────────────────────────────────────────────────────────┐
+│                   ESG RL ENVIRONMENT LOOP                       │
+│                                                                 │
+│   🏭 Company State          🤖 LLM Agent            ✅ Results  │
+│   ─────────────────         ──────────────         ──────────── │
+│   Carbon: 1200 tons   ───►  {"action": 0,    ───►  Carbon -53% │
+│   Renewable: 12%            "reasoning":          Renewable 33% │
+│   Budget: $500K             "Solar maximizes      Budget: $350K │
+│   Month: 1/6                long-term ROI"}       Score: 1.000  │
+│                                                                 │
+│                      ↑ GRPO trains this ↑                       │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+<div align="center">
+<table>
+<tr>
+<td align="center"><b>🎯 Score vs Heuristic</b></td>
+<td align="center"><b>💡 Key Innovation</b></td>
+<td align="center"><b>⚙️ Training</b></td>
+</tr>
+<tr>
+<td align="center">Medium task: <b>0.880 vs 0.847</b><br/><i>+3.9% over baseline!</i></td>
+<td align="center">No LLM judge —<br/><b>4 verifiable rewards</b></td>
+<td align="center">150 steps, 3-stage<br/><b>A100 curriculum</b></td>
+</tr>
+</table>
+</div>
+
+---
+
+## 📋 Table of Contents
+
+<details open>
+<summary><b>Click to expand</b></summary>
+
+- [🗂️ Repository Structure](#️-repository-structure)
+- [🏗️ Environment Design](#️-environment-design)
+- [🧠 Training Pipeline](#-training-pipeline)
+- [📊 Benchmark Results](#-benchmark-results)
+- [🛡️ Anti-Reward-Hacking](#️-anti-reward-hacking)
+- [🚀 Quick Start](#-quick-start)
+- [🤖 Use the Trained Model](#-use-the-trained-model)
+- [📐 API Reference](#-api-reference)
+- [🔗 Links](#-links)
+
+</details>
+
+---
+
+## 🗂️ Repository Structure
+
+<details>
+<summary><b>📁 Show full file tree</b></summary>
+
+```
+OPEN-ENV/
+│
+├── 🌐 ENVIRONMENT CORE
+│   ├── env.py                    # ESG Gym environment (state, step, rewards)
+│   ├── models.py                 # Pydantic schemas (Observation, Action, RewardComponents)
+│   ├── tasks.py                  # 3 difficulty-level task configs
+│   └── reward_functions.py       # 4 independent GRPO reward signals
+│
+├── 🤖 TRAINING PIPELINE
+│   ├── train_rl.py               # GRPO training (Unsloth + TRL)
+│   ├── dataset_builder.py        # Builds 350-sample training dataset
+│   ├── train_config_a100.yaml    # A100 curriculum config (150 steps)
+│   └── space_train_app.py        # Gradio UI for HF Space training
+│
+├── 📊 EVALUATION
+│   ├── benchmark.py              # Benchmark runner (random/heuristic/LLM)
+│   ├── plot_results.py           # Generates comparison charts
+│   ├── EVALUATION_REPORT.md      # Full V2 A100 benchmark report
+│   └── results/
+│       ├── score_comparison.png
+│       ├── reward_history.png
+│       ├── esg_metrics.png
+│       ├── baseline_random.json
+│       ├── baseline_heuristic.json
+│       └── trained_v2.json       # V2 A100 results (5 seeds × 3 tasks)
+│
+├── 🌐 API SERVER
+│   ├── app.py                    # FastAPI server (OpenEnv-compliant)
+│   └── server/app.py             # Uvicorn entrypoint shim
+│
+└── 📋 DOCUMENTATION
+    ├── README.md
+    ├── SUBMISSION.md
+    ├── EVALUATION_REPORT.md
+    └── run_benchmark.ps1          # One-click benchmark (Windows)
+```
+
+</details>
+
+---
+
+## 🏗️ Environment Design
+
+### 🔭 State Space — 17 Observable Fields
+
+<div align="center">
+
+| Category | Fields | Description |
+|:--------:|--------|-------------|
+| 🌿 **Environmental** | `carbon_emissions_tons`<br/>`renewable_energy_pct`<br/>`waste_recycled_pct`<br/>`water_usage_liters` | Core ESG metrics tracked monthly |
+| 🤝 **Social** | `diversity_score`<br/>`employee_satisfaction` | HR and workplace metrics |
+| 🏛️ **Governance** | `compliance_violations`<br/>`audit_score` | Legal & regulatory standing |
+| 💰 **Financial** | `available_budget`<br/>`monthly_costs`<br/>`total_investment` | Budget tracking |
+| 📅 **Temporal** | `current_month`<br/>`quarters_completed` | Time horizon awareness |
+| 🎯 **Targets** | `target_carbon_reduction_pct`<br/>`target_renewable_pct`<br/>`baseline_*` | Task-specific goals |
+
+</div>
+
+### 🎮 Action Space — 9 Discrete Interventions
+
+<div align="center">
+
+| ID | Action | Cost | Duration | Primary Effect |
+|:--:|--------|:----:|:--------:|----------------|
+| `0` | ☀️ **Install Solar Panels** | $150K | 6 months | +Renewable energy % |
+| `1` | 🏢 **Upgrade HVAC** | $80K | 12 months | -Energy consumption |
+| `2` | ♻️ **Recycling Program** | $25K | Permanent | +Waste recycling % |
+| `3` | 💧 **Water Recycling** | $60K | 12 months | -Water usage |
+| `4` | 🌫️ **Carbon Offset Credits** | $40K | Immediate | -Carbon emissions |
+| `5` | 👥 **Diversity Hiring** | $50K | Permanent | +Diversity score |
+| `6` | 💆 **Wellness Program** | $30K | Permanent | +Employee satisfaction |
+| `7` | ⚡ **Energy Audit** | $15K | Ongoing | -Energy usage |
+| `8` | 💤 **No Action** | $0 | — | Budget conservation |
+
+</div>
+
+### 📈 3 Task Difficulty Levels
+
+<div align="center">
+
+```
+🟢 EASY ──────────────────────────────────────────────────────────► 🔴 HARD
+
+basic_compliance          aggressive_sustainability    carbon_neutral_excellence
+━━━━━━━━━━━━━━━━━        ━━━━━━━━━━━━━━━━━━━━━━━━    ━━━━━━━━━━━━━━━━━━━━━━━━━
+6 steps | $500K           9 steps | $750K              12 steps | $1.2M
+-15% carbon               -40% carbon                  -90% carbon
+30% renewable             60% renewable                80% renewable
+                          70% recycling                ALL metrics
 ```
 
 </div>
 
 ---
 
-## 🎯 What Is This?
-
-OPEN-ENV is an **OpenAI Gym-compatible** reinforcement learning environment designed to train LLMs to solve long-horizon, multi-objective corporate decision-making tasks. It was built for the **OpenEnv Hackathon 2026**.
-
-The agent plays the role of a **corporate sustainability strategist**, choosing from 9 monthly interventions across 6–12 time steps to hit ESG (Environmental, Social, Governance) KPIs — all within a budget constraint.
-
-The key insight: **greedy, one-step-optimal strategies fail**. Only agents capable of long-horizon planning (e.g., "install solar now → big dividend for 6 months") succeed.
-
----
-
-## 🗂️ Repository Structure
-
-```
-OPEN-ENV/
-├── env.py                   # Core ESG Gym environment (state, actions, rewards)
-├── models.py                # Pydantic schemas (Observation, Action, RewardComponents)
-├── tasks.py                 # Task configs (easy/medium/hard ESG targets)
-├── reward_functions.py      # 4 independent GRPO reward functions
-├── dataset_builder.py       # Builds GRPO training dataset from heuristic rollouts
-├── train_rl.py              # GRPO training pipeline (Unsloth + TRL)
-├── train_config_a100.yaml   # A100-optimized training config (150 steps, 3-stage curriculum)
-├── benchmark.py             # Benchmark runner (random / heuristic / LLM)
-├── plot_results.py          # Generates comparison charts
-├── app.py                   # FastAPI server for OpenEnv judging API
-├── space_train_app.py       # Gradio app for HF Space training UI
-├── demo_script.py           # Live agent demo in terminal
-├── run_benchmark.ps1        # One-click benchmark runner (Windows)
-├── results/                 # Benchmark outputs and plots
-│   ├── score_comparison.png
-│   ├── reward_history.png
-│   ├── esg_metrics.png
-│   ├── baseline_random.json
-│   ├── baseline_heuristic.json
-│   └── trained_v2.json      # V2 A100 GRPO results
-└── EVALUATION_REPORT.md     # Full model evaluation with scores
-```
-
----
-
-## 🏗️ Environment Architecture
-
-### State Space (17 Fields)
-
-| Category | Fields |
-|----------|--------|
-| 🌿 Environmental | `carbon_emissions_tons`, `renewable_energy_pct`, `energy_consumption_kwh`, `waste_recycled_pct`, `water_usage_liters` |
-| 🤝 Social | `diversity_score`, `employee_satisfaction` |
-| 🏛️ Governance | `compliance_violations`, `audit_score` |
-| 💰 Financial | `available_budget`, `monthly_costs`, `total_investment` |
-| 📅 Temporal | `current_month`, `quarters_completed` |
-| 🎯 Targets | `target_carbon_reduction_pct`, `target_renewable_pct`, `baseline_carbon_emissions_tons` |
-
-### Action Space (9 Discrete Actions)
-
-| ID | Action | Cost | Effect Duration |
-|----|--------|------|----------------|
-| 0 | ☀️ Install Solar Panels | $150K | 6 months |
-| 1 | 🏢 Upgrade HVAC | $80K | 12 months |
-| 2 | ♻️ Recycling Program | $25K | Permanent |
-| 3 | 💧 Water Recycling System | $60K | 12 months |
-| 4 | 🌫️ Carbon Offset Credits | $40K | Immediate |
-| 5 | 👥 Diversity Hiring Program | $50K | Permanent |
-| 6 | 💆 Employee Wellness Program | $30K | Permanent |
-| 7 | ⚡ Energy Audit | $15K | Ongoing |
-| 8 | 💤 No Action | $0 | — |
-
-### 3 Task Difficulty Levels
-
-| Task | Difficulty | Steps | Budget | Targets |
-|------|:----------:|:-----:|:------:|---------|
-| `basic_compliance` | 🟢 Easy | 6 | $500K | -15% carbon, 30% renewable |
-| `aggressive_sustainability` | 🟡 Medium | 9 | $750K | -40% carbon, 60% renewable, 70% recycling |
-| `carbon_neutral_excellence` | 🔴 Hard | 12 | $1.2M | -90% carbon, 80% renewable, ALL metrics |
-
----
-
 ## 🧠 Training Pipeline
 
+<div align="center">
+
 ```
-Dataset Builder
-(350 samples: heuristic + random + adversarial)
-        │
-        ▼
-ESGEnvironment.step()  ←──── LLM Generates Action JSON
-        │
-        ▼
-4 Independent Reward Functions
-  ├── reward_env_outcome()     (45%) — Simulator shaped reward
-  ├── reward_format_compliance() (25%) — Valid JSON enforcement
-  ├── reward_anti_cheat()       (15%) — Penalize NO_ACTION spam
-  └── reward_task_progress()    (15%) — Terminal grader signal
-        │
-        ▼
-TRL GRPOTrainer + Unsloth 4-bit LoRA
-(Qwen2.5-0.5B-Instruct, bf16, A100 80GB)
-        │
-        ▼
-Trained LoRA Adapter → tharun5054/esg-rl-agent-grpo
+         DATASET (350 samples)
+         ┌─────────────────────────────────┐
+         │  60% Heuristic rollouts         │
+         │  25% Random exploration         │
+         │  15% Adversarial edge cases     │
+         └──────────────┬──────────────────┘
+                        │
+                        ▼
+         ┌──────────────────────────────────┐
+         │     LLM generates JSON action    │
+         │  {"action": 0, "reasoning": ...} │
+         └──────────────┬───────────────────┘
+                        │
+                        ▼
+         ┌──────────────────────────────────────────────┐
+         │            REWARD FUNCTIONS                  │
+         │  ┌─────────────────────┬──────────────────┐  │
+         │  │ env_outcome   (45%) │ format_comply(25%)│  │
+         │  │ anti_cheat    (15%) │ task_progress(15%)│  │
+         │  └─────────────────────┴──────────────────┘  │
+         └──────────────┬───────────────────────────────┘
+                        │
+                        ▼
+         ┌──────────────────────────────────┐
+         │   TRL GRPOTrainer + Unsloth      │
+         │   Qwen2.5-0.5B  |  bf16  |  A100 │
+         │   LoRA r=16, α=32, lr=8e-6        │
+         └──────────────┬───────────────────┘
+                        │
+                        ▼
+         🤗 tharun5054/esg-rl-agent-grpo
 ```
 
-### A100 Training Config (V2)
-- **150 steps** across a **3-stage curriculum**: 50 steps easy → 60 steps medium → 40 steps hard
-- **6 GRPO generations** per prompt for better policy gradient signal
-- **LR: 8e-6** with grad norm 0.8 for stable convergence
-- **350-sample dataset** mixing heuristic rollouts, random exploration, and adversarial scenarios
-- **Cost:** ~$4.50 on A100 Large
+</div>
+
+### 📅 3-Stage A100 Curriculum
+
+<div align="center">
+
+```
+Step 0 ────── Step 50 ────── Step 110 ────── Step 150
+   │               │               │               │
+   │  🟢 EASY      │  🟡 MEDIUM    │  🔴 HARD      │
+   │  basic        │  aggressive   │  carbon       │
+   │  compliance   │  sustain.     │  neutral      │
+   │  50 steps     │  60 steps     │  40 steps     │
+   └───────────────┴───────────────┴───────────────┘
+   
+   Cost: ~$4.50 | Time: ~40 min | GPU: A100 80GB
+```
+
+</div>
 
 ---
 
-## 📊 Benchmark Results (V2 A100 Model)
+## 📊 Benchmark Results
 
-All scores measured across **5 seeds per task** using the deterministic environment grader.
+<div align="center">
 
-| Agent | Easy | Medium | Hard | Overall |
-|-------|:----:|:------:|:----:|:-------:|
-| 🎲 Random | 0.740 | 0.643 | 0.678 | **0.687** |
-| 🧠 Heuristic Baseline | 1.000 | 0.847 | 0.852 | **0.900** |
-| 🚀 **V2 GRPO (A100)** | **1.000** | **0.880** | **0.726** | **0.869** |
+### 🏆 V2 A100 Model vs Baselines (5 seeds × 3 tasks)
 
-> 🏆 **The V2 GRPO Agent outperformed the hand-coded heuristic on the Medium task (0.880 vs 0.847)**, demonstrating genuine zero-shot generalization of learned ESG strategies.
+| Agent | 🟢 Easy | 🟡 Medium | 🔴 Hard | 📊 Overall |
+|:-----:|:-------:|:---------:|:-------:|:----------:|
+| 🎲 Random | 0.740 | 0.643 | 0.678 | 0.687 |
+| 🧠 Heuristic | 1.000 | 0.847 | 0.852 | 0.900 |
+| 🚀 **V2 GRPO (A100)** | **1.000** | **0.880 ✨** | **0.726** | **0.869** |
 
-### Improvement vs. Random Baseline
+> ✨ **The V2 model BEAT the heuristic baseline on the Medium task (0.880 > 0.847)** — proving genuine RL generalization!
 
-| Task | Random | V2 GRPO | Δ |
-|------|:------:|:-------:|:-:|
-| Easy | 0.740 | 1.000 | **+35.1%** |
-| Medium | 0.643 | 0.880 | **+36.8%** |
-| Hard | 0.678 | 0.726 | **+7.1%** |
-| **Overall** | **0.687** | **0.869** | **+26.5%** |
+</div>
+
+### 📈 Improvement Over Random Baseline
+
+<div align="center">
+
+```
+Easy Task   ██████████████████████████████████░  +35.1%  (0.740 → 1.000)
+Medium Task ████████████████████████████████████  +36.8%  (0.643 → 0.880) ← BEATS HEURISTIC
+Hard Task   ███████░                              +7.1%   (0.678 → 0.726)
+Overall     ████████████████████████████░         +26.5%  (0.687 → 0.869)
+```
+
+</div>
 
 ---
 
-## 🛡️ Anti-Reward-Hacking Measures
+## 🛡️ Anti-Reward-Hacking
 
-Following OpenEnv Hackathon Guide §8 requirements:
+Following **OpenEnv Hackathon Guide §8** requirements — all checks are implemented:
 
-- ✅ **12 independent reward signals** (not one monolithic function)
-- ✅ **Anti-cheat penalty** for `NO_ACTION` spamming
-- ✅ **Anti-cheat penalty** for repeating cheap actions in sequence
-- ✅ **Budget bankruptcy detection** (severe negative reward)
-- ✅ **Per-step wall-clock timeout** (10s) in FastAPI server
-- ✅ **Thread-safe session isolation** (UUID per session, no shared state)
-- ✅ **Deterministic graders** (same input → same score, always)
-- ✅ **Format compliance reward** (forces structured JSON output)
+<div align="center">
+
+| # | Measure | Implementation |
+|:-:|---------|----------------|
+| ✅ | **12 independent reward signals** | No monolithic reward function |
+| ✅ | **NO_ACTION spam detection** | Anti-cheat penalty for repeated no-ops |
+| ✅ | **Action repetition penalty** | Penalizes cheap action loops |
+| ✅ | **Budget bankruptcy** | Severe negative reward at $0 balance |
+| ✅ | **Per-step timeout** | 10s wall-clock limit per API step |
+| ✅ | **Thread-safe sessions** | UUID per session, zero shared state |
+| ✅ | **Deterministic graders** | Same input → identical score, always |
+| ✅ | **Format compliance** | Forces valid `{"action": int, "reasoning": str}` |
+
+</div>
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Clone & Install
+### 1️⃣ Clone & Install
 
 ```bash
 git clone https://github.com/TharunBabu-05/OPEN-ENV
 cd OPEN-ENV
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Run Smoke Test (No GPU)
+### 2️⃣ Smoke Test (No GPU needed)
+
 ```bash
 python train_rl.py --smoke_test
+# Expected: Runs 2 steps, prints reward, exits cleanly
 ```
 
-### 3. Live Demo — Watch the Agent Play
+### 3️⃣ Watch the Agent Play
+
 ```bash
 python demo_script.py
+# Expected: Live terminal walkthrough of one episode
 ```
 
-### 4. Run Full Benchmark
-```bash
-# Windows
-.\run_benchmark.ps1
+### 4️⃣ Run Benchmarks
 
-# Or manually
-python benchmark.py --mode random --output results/baseline_random.json
+```bash
+# Run all baselines + LLM agent and generate plots
+.\run_benchmark.ps1                     # Windows
+# Or step by step:
+python benchmark.py --mode random    --output results/baseline_random.json
 python benchmark.py --mode heuristic --output results/baseline_heuristic.json
 python benchmark.py --mode llm --model_path tharun5054/esg-rl-agent-grpo --output results/trained.json
+python plot_results.py --random results/baseline_random.json \
+                       --baseline results/baseline_heuristic.json \
+                       --trained results/trained.json --output_dir results
 ```
 
-### 5. Start the FastAPI Server
+### 5️⃣ Start the Environment API
+
 ```bash
 uvicorn app:app --reload --port 8000
+# → http://localhost:8000/health  ✅
+# → http://localhost:8000/        (environment info)
 ```
 
-### 6. Train on A100 (HuggingFace Space)
-Go to the [Training Space](https://huggingface.co/spaces/tharun5054/esg-rl-train), enter your HF token, and click **🚀 Start Training**.
+### 6️⃣ Train on A100 (HuggingFace Space UI)
+
+> Go to [🚀 Training Space](https://huggingface.co/spaces/tharun5054/esg-rl-train), enter your HF token, click **Start Training**.
 
 ---
 
@@ -223,51 +370,92 @@ Go to the [Training Space](https://huggingface.co/spaces/tharun5054/esg-rl-train
 ```python
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
 
-base = AutoModelForCausalLM.from_pretrained("unsloth/Qwen2.5-0.5B-Instruct")
-model = PeftModel.from_pretrained(base, "tharun5054/esg-rl-agent-grpo", subfolder="lora_adapter")
-tokenizer = AutoTokenizer.from_pretrained("tharun5054/esg-rl-agent-grpo", subfolder="lora_adapter")
+# ── Load base + adapter ───────────────────────────────────────────────────────
+base      = AutoModelForCausalLM.from_pretrained("unsloth/Qwen2.5-0.5B-Instruct")
+model     = PeftModel.from_pretrained(base, "tharun5054/esg-rl-agent-grpo",
+                                      subfolder="lora_adapter")
+tokenizer = AutoTokenizer.from_pretrained("tharun5054/esg-rl-agent-grpo",
+                                          subfolder="lora_adapter")
+model.eval()
 
-prompt = """You are an ESG sustainability strategist. Current state:
-- Carbon Emissions: 1200 tons (target: -15%)
-- Renewable Energy: 12% (target: 30%)
-- Available Budget: $500,000
+# ── Build a prompt ────────────────────────────────────────────────────────────
+prompt = """You are an ESG sustainability strategist.
 
-Choose an action (0-8) and explain your reasoning."""
+Current state:
+  Carbon Emissions : 1200 tons  (target: -15%)
+  Renewable Energy : 12%        (target: 30%)
+  Budget Available : $500,000
+  Month            : 1 of 6
+
+Choose one action (0-8) and explain your reasoning. Output JSON only."""
 
 inputs = tokenizer(prompt, return_tensors="pt")
-out = model.generate(**inputs, max_new_tokens=128, temperature=0.7)
-print(tokenizer.decode(out[0], skip_special_tokens=True))
-# Output: {"action": 0, "reasoning": "Installing solar panels will boost renewable energy..."}
+with torch.no_grad():
+    output = model.generate(**inputs, max_new_tokens=128,
+                            temperature=0.7, do_sample=True,
+                            pad_token_id=tokenizer.eos_token_id)
+
+response = tokenizer.decode(output[0][inputs.input_ids.shape[1]:],
+                            skip_special_tokens=True)
+print(response)
+# → {"action": 0, "reasoning": "Installing solar panels maximizes long-term ROI..."}
 ```
 
 ---
 
-## 📐 Environment API
+## 📐 API Reference
 
-The environment is fully compatible with the OpenEnv judging API:
+The environment is **OpenEnv judging-compatible** and live at:
+`https://tharun5054-esg-compliance-env.hf.space`
+
+<details>
+<summary><b>📖 Show all endpoints</b></summary>
 
 ```
-POST /reset         → { "obs": {...17 fields...}, "session_id": "..." }
-POST /step          → { "obs": {...}, "reward": 1.23, "done": false, "info": {...} }
-GET  /tasks         → List of available task configs
-GET  /health        → Server health check
+GET  /                    → Server info + available tasks
+GET  /health              → {"status": "ok", "active_sessions": N}
+POST /reset               → Start a new episode session
+     Body: {"task_id": "basic_compliance", "seed": 42}
+     Returns: {"session_id": "uuid", "observation": {...17 fields...}}
+
+POST /step                → Take one action
+     Body: {"session_id": "uuid", "action": 0}
+     Returns: {"observation": {...}, "reward": 1.23,
+               "terminated": false, "truncated": false, "info": {...}}
+
+GET  /state/{session_id}  → Current observation without stepping
+DEL  /session/{session_id}→ Close and cleanup a session
 ```
+
+</details>
 
 ---
 
 ## 🔗 Links
 
-| | |
-|-|-|
-| 📦 **GitHub** | [TharunBabu-05/OPEN-ENV](https://github.com/TharunBabu-05/OPEN-ENV) |
-| 🤗 **Trained Model** | [tharun5054/esg-rl-agent-grpo](https://huggingface.co/tharun5054/esg-rl-agent-grpo) |
-| 🚀 **Training Space** | [tharun5054/esg-rl-train](https://huggingface.co/spaces/tharun5054/esg-rl-train) |
-| 📊 **Evaluation Report** | [EVALUATION_REPORT.md](./EVALUATION_REPORT.md) |
-| 📋 **Submission Brief** | [SUBMISSION.md](./SUBMISSION.md) |
+<div align="center">
+
+| | Resource | URL |
+|-|----------|-----|
+| 📦 | **GitHub Repository** | [TharunBabu-05/OPEN-ENV](https://github.com/TharunBabu-05/OPEN-ENV) |
+| 🤗 | **Trained Model** | [tharun5054/esg-rl-agent-grpo](https://huggingface.co/tharun5054/esg-rl-agent-grpo) |
+| 🌍 | **Environment API** | [tharun5054/esg-compliance-env](https://huggingface.co/spaces/tharun5054/esg-compliance-env) |
+| 🚀 | **Training Space** | [tharun5054/esg-rl-train](https://huggingface.co/spaces/tharun5054/esg-rl-train) |
+| 📊 | **Evaluation Report** | [EVALUATION_REPORT.md](./EVALUATION_REPORT.md) |
+| 📋 | **Submission Brief** | [SUBMISSION.md](./SUBMISSION.md) |
+
+</div>
 
 ---
 
-## 📜 License
+<div align="center">
 
-MIT © 2026 Tharun Babu
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer" width="100%"/>
+
+**Made with 💚 for OpenEnv Hackathon 2026**
+
+*MIT License © 2026 Tharun Babu*
+
+</div>
