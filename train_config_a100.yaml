@@ -1,6 +1,6 @@
 # ============================================================
-# A100-Optimized GRPO Training Config
-# Target: NVIDIA A100 Large (80GB VRAM)
+# A100-Optimized GRPO Training Config v2
+# ROUND 2: More steps, refined rewards, lower LR
 # ============================================================
 
 # Model
@@ -15,39 +15,39 @@ use_unsloth: true
 # A100 Precision & Performance
 precision: "bf16"
 cpu_only: false
-torch_compile: false  # disable for LoRA compat
+torch_compile: false
 
-# Curriculum stages (task progression)
+# Curriculum stages (bigger budget per stage)
 curriculum:
   - stage: 1
     task_ids: ["basic_compliance"]
-    steps: 300
-    n_episodes_per_task: 40
+    steps: 50
+    n_episodes_per_task: 30
   - stage: 2
     task_ids: ["aggressive_sustainability"]
-    steps: 400
-    n_episodes_per_task: 40
+    steps: 60
+    n_episodes_per_task: 30
   - stage: 3
     task_ids: ["carbon_neutral_excellence"]
-    steps: 300
-    n_episodes_per_task: 40
+    steps: 40
+    n_episodes_per_task: 30
 
-# GRPO Settings (A100-optimized)
-learning_rate: 1.2e-5
+# GRPO Settings (refined for round 2)
+learning_rate: 8.0e-6
 num_train_epochs: 1
-max_steps: 1000
-per_device_train_batch_size: 8
-gradient_accumulation_steps: 8
-num_generations: 8
-max_new_tokens: 256
+max_steps: 150
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4
+num_generations: 6
+max_new_tokens: 192
 temperature: 0.7
 top_p: 0.9
-max_grad_norm: 1.0
+max_grad_norm: 0.8
 
 # Logging & Checkpointing
 logging_steps: 10
-save_steps: 100
-output_dir: "outputs/grpo_step_1000_a100_new"
+save_steps: 50
+output_dir: "outputs/grpo_step_150_a100_v2"
 
 # Dataset expansion
 dataset_size: 350
@@ -56,12 +56,12 @@ dataset_strategy:
   random_pct: 25
   adversarial_pct: 15
 
-# Reward adjustments
+# Reward adjustments (v2: heavier format + anti-cheat)
 reward_weights:
-  env_outcome: 0.55
-  format_compliance: 0.15
-  anti_cheat: 0.10
-  task_progress: 0.10
+  env_outcome: 0.45
+  format_compliance: 0.25
+  anti_cheat: 0.15
+  task_progress: 0.05
   waste_boost: 0.05
   synergy_bonus: 0.05
 

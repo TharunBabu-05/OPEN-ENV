@@ -74,10 +74,10 @@ def run_training(hf_token: str, progress=gr.Progress()):
     training_log.append(f"Dataset ready: {len(samples)} samples")
 
     # Step 4: Run training
-    training_log.append("\n[4/6] Starting GRPO training (1000 steps, 3 stages)...")
-    training_log.append("  Stage 1: basic_compliance (300 steps)")
-    training_log.append("  Stage 2: aggressive_sustainability (400 steps)")
-    training_log.append("  Stage 3: carbon_neutral_excellence (300 steps)")
+    training_log.append("\n[4/6] Starting GRPO training (150 steps, 3 stages)...")
+    training_log.append("  Stage 1: basic_compliance (50 steps)")
+    training_log.append("  Stage 2: aggressive_sustainability (60 steps)")
+    training_log.append("  Stage 3: carbon_neutral_excellence (40 steps)")
     yield get_log_text(), "🚀 Training started..."
 
     try:
@@ -104,7 +104,7 @@ def run_training(hf_token: str, progress=gr.Progress()):
             create_repo(REPO, exist_ok=True, private=False, token=hf_token)
 
             # Upload new A100 adapter
-            adapter_path = "outputs/grpo_step_1000_a100_new/lora_adapter"
+            adapter_path = "outputs/grpo_step_150_a100_v2/lora_adapter"
             if os.path.isdir(adapter_path):
                 api.upload_folder(
                     folder_path=adapter_path,
@@ -114,7 +114,7 @@ def run_training(hf_token: str, progress=gr.Progress()):
                 training_log.append("A100 LoRA adapter uploaded!")
 
             # Upload config
-            config_path = "outputs/grpo_step_1000_a100_new/train_config_used.json"
+            config_path = "outputs/grpo_step_150_a100_v2/train_config_used.json"
             if os.path.exists(config_path):
                 api.upload_file(
                     path_or_fileobj=config_path,
@@ -130,9 +130,9 @@ def run_training(hf_token: str, progress=gr.Progress()):
     # Step 6: Summary
     training_log.append("\n[6/6] Training Summary")
     training_log.append("=" * 60)
-    training_log.append(f"  Total Steps: 1000 (3 curriculum stages)")
+    training_log.append(f"  Total Steps: 150 (3 curriculum stages)")
     training_log.append(f"  Dataset: {len(samples)} samples")
-    training_log.append(f"  Model: outputs/grpo_step_1000_a100_new/lora_adapter")
+    training_log.append(f"  Model: outputs/grpo_step_150_a100_v2/lora_adapter")
     training_log.append("=" * 60)
 
     training_status = "complete"
@@ -155,7 +155,7 @@ with gr.Blocks(title="ESG RL Agent - A100 Training", theme=gr.themes.Soft()) as 
     |---------|-------|
     | Base Model | Qwen2.5-0.5B-Instruct |
     | Method | GRPO + LoRA (4-bit) |
-    | Steps | 1000 (curriculum: easy→medium→hard) |
+    | Steps | 150 (curriculum: easy→medium→hard) |
     | Dataset | 350 samples (heuristic + random + adversarial) |
     | Hardware | NVIDIA A100 80GB |
     """)

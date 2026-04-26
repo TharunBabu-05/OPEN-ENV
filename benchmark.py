@@ -61,19 +61,11 @@ def llm_agent_factory(model_path: str):
         from reward_functions import _parse_action
 
         print(f"[benchmark] Loading model from: {model_path}")
-        base_model_name = "unsloth/Qwen2.5-1.5B-Instruct"
-
-        try:
-            from unsloth import FastLanguageModel
-            model, tokenizer = FastLanguageModel.from_pretrained(
-                model_name=model_path,
-                max_seq_length=512,
-                load_in_4bit=True,
-            )
-            FastLanguageModel.for_inference(model)
-        except (ImportError, Exception):
-            tokenizer = AutoTokenizer.from_pretrained(model_path)
-            model = AutoModelForCausalLM.from_pretrained(model_path)
+        print(f"[benchmark] Unsloth not found, using transformers + peft fallback")
+        base_model_name = "unsloth/Qwen2.5-0.5B-Instruct"
+        tokenizer = AutoTokenizer.from_pretrained(base_model_name)
+        base_model = AutoModelForCausalLM.from_pretrained(base_model_name)
+        model = PeftModel.from_pretrained(base_model, model_path)
 
         model.eval()
         device = "cuda" if torch.cuda.is_available() else "cpu"
