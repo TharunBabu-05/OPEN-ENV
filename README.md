@@ -1,725 +1,273 @@
----
-title: ESG Compliance Env
-emoji: "🌍"
-colorFrom: blue
-colorTo: green
-sdk: docker
-pinned: false
-app_port: 7860
----
+<div align="center">
 
-# 🌍 AI ESG Compliance & Sustainability Evaluation Environment
+# 🌍 OPEN-ENV: ESG Compliance Reinforcement Learning Environment
 
-[![OpenEnv](https://img.shields.io/badge/OpenEnv-Hackathon%202026-green)](https://openenv.ai)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Docker](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/)
+<p align="center">
+  <a href="https://github.com/TharunBabu-05/OPEN-ENV/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License"></a>
+  <a href="https://huggingface.co/tharun5054/esg-rl-agent-grpo"><img src="https://img.shields.io/badge/%F0%9F%A4%97-Model%20on%20HF-yellow" alt="Hugging Face Model"></a>
+  <a href="https://huggingface.co/spaces/tharun5054/esg-rl-train"><img src="https://img.shields.io/badge/%F0%9F%A4%97-Space%20on%20HF-blue" alt="Hugging Face Space"></a>
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python" alt="Python">
+  <img src="https://img.shields.io/badge/GRPO-TRL%20%2B%20Unsloth-orange" alt="GRPO">
+  <img src="https://img.shields.io/badge/GPU-A100%2080GB-76B900?logo=nvidia" alt="A100">
+  <img src="https://img.shields.io/badge/OpenEnv-Hackathon%202026-purple" alt="OpenEnv">
+</p>
 
-> **A production-ready OpenEnv environment for training AI agents to optimize corporate ESG (Environmental, Social, Governance) performance through strategic decision-making.**
+<p align="center">
+  <b>A reinforcement learning environment where an LLM agent acts as a corporate ESG sustainability strategist — making sequential multi-objective decisions to hit carbon, renewable energy, diversity, and waste targets within a fixed budget and timeline.</b>
+</p>
 
----
-
-## 📖 Table of Contents
-
-- [Overview](#overview)
-- [Motivation & Real-World Impact](#motivation--real-world-impact)
-- [Architecture](#architecture)
-- [Environment Specification](#environment-specification)
-- [Tasks](#tasks)
-- [Reward Strategy](#reward-strategy)
-- [Installation & Setup](#installation--setup)
-- [Running Inference](#running-inference)
-- [Baseline Performance](#baseline-performance)
-- [Technical Details](#technical-details)
-- [Citation](#citation)
-
----
-
-## 🎯 Overview
-
-The **ESG Compliance & Sustainability Environment** is a realistic simulation where AI agents act as corporate sustainability officers, making monthly strategic decisions to optimize a company's environmental, social, and governance performance.
-
-### Key Features
-
-✅ **Realistic ESG Simulation** - Monthly dynamics with seasonal variations, natural metric drift, and persistent action effects  
-✅ **Multi-Objective Optimization** - Balance carbon reduction, renewable energy, diversity, waste management, and budget  
-✅ **Shaped Rewards** - Dense feedback signal with 10+ reward components (not sparse!)  
-✅ **3 Progressive Tasks** - Easy → Medium → Hard difficulty with meaningful complexity scaling  
-✅ **Deterministic Grading** - Reproducible scoring from 0.0 to 1.0  
-✅ **LLM-Ready** - OpenAI-compatible inference with structured JSON logging  
-✅ **Production Quality** - Type-safe Pydantic models, comprehensive error handling, <20 min runtime  
-
----
-
-## 💡 Motivation & Real-World Impact
-
-### Why ESG Matters
-
-Environmental, Social, and Governance (ESG) metrics are rapidly becoming **critical business imperatives**:
-
-- **$35 trillion** in ESG assets under management globally (2023)
-- **88% of publicly traded companies** now publish ESG reports
-- **Regulatory pressure** from EU Taxonomy, SEC Climate Disclosure Rules, TCFD
-- **Investor demand** for sustainable, responsible business practices
-
-### The Challenge
-
-Corporate sustainability officers face a **complex optimization problem**:
-- **Trade-offs**: Reducing carbon may increase costs; diversity initiatives compete with other budgets
-- **Time horizons**: Solar panels have upfront costs but long-term benefits
-- **Multi-stakeholder**: Environmental targets vs. social goals vs. governance requirements
-- **Uncertainty**: Natural metric drift, seasonal variations, compliance risks
-
-### Our Solution
-
-This environment trains AI agents to navigate these real-world trade-offs, discovering optimal **ESG strategies** that:
-- Achieve carbon reduction targets efficiently
-- Balance immediate impact vs. long-term sustainability
-- Manage budget constraints realistically
-- Address environmental, social, AND governance dimensions holistically
-
-**Impact**: AI-assisted ESG optimization could help companies achieve sustainability goals **faster and cheaper**, accelerating the global transition to net-zero.
-
----
-
-## 🏗️ Architecture
-
-### System Design
+<br/>
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                       AI AGENT (LLM)                        │
-│          Strategic ESG Decision Maker via OpenAI API        │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     │ Observes State (20 metrics)
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   ESG ENVIRONMENT                           │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │  COMPANY STATE                                       │   │
-│  │  • Environmental: Energy, Carbon, Waste, Water       │   │
-│  │  • Social: Diversity, Employee Satisfaction          │   │
-│  │  • Governance: Compliance Violations, Audit Score    │   │
-│  │  • Financial: Budget, Operating Costs                │   │
-│  └──────────────────────────────────────────────────────┘   │
-│                     │                                        │
-│                     │ Agent selects action (0-8)            │
-│                     ▼                                        │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │  ACTION PROCESSOR                                    │   │
-│  │  • Apply immediate effects (e.g., -$150K, +15% solar)│   │
-│  │  • Register ongoing effects (e.g., +2.5%/month)      │   │
-│  │  • Update compliance status                          │   │
-│  └──────────────────────────────────────────────────────┘   │
-│                     │                                        │
-│                     ▼                                        │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │  STATE DYNAMICS ENGINE                               │   │
-│  │  • Simulate monthly evolution (seasonal energy)      │   │
-│  │  • Apply natural drift (satisfaction decay)          │   │
-│  │  • Recalculate carbon emissions                      │   │
-│  │  • Update audit score                                │   │
-│  └──────────────────────────────────────────────────────┘   │
-│                     │                                        │
-│                     ▼                                        │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │  REWARD CALCULATOR (10 components)                   │   │
-│  │  • Carbon progress: +0.1 per improvement             │   │
-│  │  • Renewable progress: +0.05 per % gain              │   │
-│  │  • Diversity progress: +0.05 per point               │   │
-│  │  • Violations penalty: -0.2 each                     │   │
-│  │  • Quarterly bonuses/penalties: ±0.5                 │   │
-│  │  • Synergy bonuses: +0.15 for multi-metric gains     │   │
-│  │  • Task completion: +5.0 bonus                       │   │
-│  └──────────────────────────────────────────────────────┘   │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     │ Returns (obs, reward, done, info)
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│               DETERMINISTIC GRADER                          │
-│  Evaluates final state against task-specific targets       │
-│  Returns score ∈ [0.0, 1.0]                                 │
-└─────────────────────────────────────────────────────────────┘
+🏭 Carbon at 100% ──► 🤖 RL Agent Decides ──► ☀️ Solar Panels Installed
+💰 Budget: $500K           (monthly)              🌿 Carbon drops to 47%
+📅 6-Month Horizon     ────────────────────►      ✅ Target ACHIEVED
 ```
 
-### Data Flow
+</div>
+
+---
+
+## 🎯 What Is This?
+
+OPEN-ENV is an **OpenAI Gym-compatible** reinforcement learning environment designed to train LLMs to solve long-horizon, multi-objective corporate decision-making tasks. It was built for the **OpenEnv Hackathon 2026**.
+
+The agent plays the role of a **corporate sustainability strategist**, choosing from 9 monthly interventions across 6–12 time steps to hit ESG (Environmental, Social, Governance) KPIs — all within a budget constraint.
+
+The key insight: **greedy, one-step-optimal strategies fail**. Only agents capable of long-horizon planning (e.g., "install solar now → big dividend for 6 months") succeed.
+
+---
+
+## 🗂️ Repository Structure
 
 ```
-RESET → Initialize Company
-    ↓
-    ├─ Set baseline metrics (energy, carbon, water)
-    ├─ Load task configuration (targets, budget, max steps)
-    └─ Return initial observation
-    ↓
-STEP 1: Agent observes state → Selects action → Environment processes
-    ↓
-    ├─ Deduct action cost from budget
-    ├─ Apply immediate effects (solar panels → +15% renewable)
-    ├─ Register ongoing effects (solar → +2.5%/month for 6 months)
-    ├─ Simulate monthly dynamics (seasonal energy fluctuation)
-    ├─ Recalculate derived metrics (carbon = energy × (1-renewable%) × 0.4)
-    ├─ Calculate shaped reward (10 components)
-    └─ Return (obs, reward, terminated, truncated, info)
-    ↓
-STEP 2-N: Repeat until task complete or max steps reached
-    ↓
-GRADE: Evaluate final state with deterministic grader
-    ↓
-    └─ Score ∈ [0.0, 1.0] based on target achievement
+OPEN-ENV/
+├── env.py                   # Core ESG Gym environment (state, actions, rewards)
+├── models.py                # Pydantic schemas (Observation, Action, RewardComponents)
+├── tasks.py                 # Task configs (easy/medium/hard ESG targets)
+├── reward_functions.py      # 4 independent GRPO reward functions
+├── dataset_builder.py       # Builds GRPO training dataset from heuristic rollouts
+├── train_rl.py              # GRPO training pipeline (Unsloth + TRL)
+├── train_config_a100.yaml   # A100-optimized training config (150 steps, 3-stage curriculum)
+├── benchmark.py             # Benchmark runner (random / heuristic / LLM)
+├── plot_results.py          # Generates comparison charts
+├── app.py                   # FastAPI server for OpenEnv judging API
+├── space_train_app.py       # Gradio app for HF Space training UI
+├── demo_script.py           # Live agent demo in terminal
+├── run_benchmark.ps1        # One-click benchmark runner (Windows)
+├── results/                 # Benchmark outputs and plots
+│   ├── score_comparison.png
+│   ├── reward_history.png
+│   ├── esg_metrics.png
+│   ├── baseline_random.json
+│   ├── baseline_heuristic.json
+│   └── trained_v2.json      # V2 A100 GRPO results
+└── EVALUATION_REPORT.md     # Full model evaluation with scores
 ```
 
 ---
 
-## 🔍 Environment Specification
+## 🏗️ Environment Architecture
 
-### Observation Space (20 Metrics)
+### State Space (17 Fields)
 
-The agent observes a **complete ESG state** at each timestep:
-
-#### 🌱 Environmental Metrics (6)
-| Metric | Type | Range | Description |
-|--------|------|-------|-------------|
-| `energy_consumption_kwh` | float | 0-20,000 | Monthly energy usage in kilowatt-hours |
-| `renewable_energy_pct` | float | 0-100 | Percentage from renewable sources |
-| `carbon_emissions_tons` | float | 0-10,000 | CO₂ emissions (auto-calculated from energy) |
-| `waste_generated_tons` | float | 0-2,000 | Monthly waste production |
-| `waste_recycled_pct` | float | 0-100 | Percentage of waste recycled |
-| `water_usage_cubic_m` | float | 0-100,000 | Water consumption in cubic meters |
-
-#### 👥 Social Metrics (2)
-| Metric | Type | Range | Description |
-|--------|------|-------|-------------|
-| `diversity_score` | float | 0-100 | Composite diversity & inclusion index |
-| `employee_satisfaction` | float | 0-100 | Employee happiness and engagement |
-
-#### 💰 Financial Metrics (2)
-| Metric | Type | Range | Description |
-|--------|------|-------|-------------|
-| `available_budget` | float | -∞ to +∞ | Remaining ESG improvement budget |
-| `monthly_costs` | float | 0+ | Current operating costs |
-
-#### 📋 Governance Metrics (2)
-| Metric | Type | Range | Description |
-|--------|------|-------|-------------|
-| `compliance_violations` | int | 0-50 | Active regulatory violations |
-| `audit_score` | float | 0-100 | ESG audit score (weighted avg of all metrics) |
-
-#### ⏰ Temporal & Target Metrics (8)
-- `current_month` (1-12)
-- `quarters_completed` (0-4)
-- `target_carbon_reduction_pct` (task-specific)
-- `target_renewable_pct` (task-specific)
-- `target_diversity_score` (task-specific)
-- `baseline_carbon_emissions_tons` (for % reduction calc)
-- `baseline_water_usage_cubic_m` (for % reduction calc)
-- `actions_taken` (history), `total_investment` (cumulative spend)
+| Category | Fields |
+|----------|--------|
+| 🌿 Environmental | `carbon_emissions_tons`, `renewable_energy_pct`, `energy_consumption_kwh`, `waste_recycled_pct`, `water_usage_liters` |
+| 🤝 Social | `diversity_score`, `employee_satisfaction` |
+| 🏛️ Governance | `compliance_violations`, `audit_score` |
+| 💰 Financial | `available_budget`, `monthly_costs`, `total_investment` |
+| 📅 Temporal | `current_month`, `quarters_completed` |
+| 🎯 Targets | `target_carbon_reduction_pct`, `target_renewable_pct`, `baseline_carbon_emissions_tons` |
 
 ### Action Space (9 Discrete Actions)
 
-| ID | Action | Cost | Immediate Effect | Ongoing Effect | Duration |
-|----|--------|------|------------------|----------------|----------|
-| 0 | **INSTALL_SOLAR_PANELS** | $150K | +15% renewable, -300 kWh, -$800/mo costs | +2.5% renewable/mo, -150 kWh/mo, -$400/mo costs | 6 months |
-| 1 | **UPGRADE_HVAC_EFFICIENCY** | $80K | -500 kWh, -$300/mo costs | -200 kWh/mo, -$150/mo costs | 12 months |
-| 2 | **IMPLEMENT_RECYCLING_PROGRAM** | $25K | +20% recycling, -$100/mo costs | -$50/mo costs | 12 months |
-| 3 | **INSTALL_WATER_RECYCLING** | $60K | -5000 m³ water, -$200/mo costs | -$100/mo costs | 12 months |
-| 4 | **CARBON_OFFSET_PURCHASE** | $40K | -400 tons CO₂ | None | 1 month |
-| 5 | **DIVERSITY_HIRING_INITIATIVE** | $50K | +8 diversity, +3 satisfaction | None | 6 months |
-| 6 | **EMPLOYEE_WELLNESS_PROGRAM** | $30K | +10 satisfaction, +2 diversity | None | 6 months |
-| 7 | **ENERGY_AUDIT** | $15K | -100 kWh | -50 kWh/mo | 3 months |
-| 8 | **NO_ACTION** | $0 | None | None | 1 month |
+| ID | Action | Cost | Effect Duration |
+|----|--------|------|----------------|
+| 0 | ☀️ Install Solar Panels | $150K | 6 months |
+| 1 | 🏢 Upgrade HVAC | $80K | 12 months |
+| 2 | ♻️ Recycling Program | $25K | Permanent |
+| 3 | 💧 Water Recycling System | $60K | 12 months |
+| 4 | 🌫️ Carbon Offset Credits | $40K | Immediate |
+| 5 | 👥 Diversity Hiring Program | $50K | Permanent |
+| 6 | 💆 Employee Wellness Program | $30K | Permanent |
+| 7 | ⚡ Energy Audit | $15K | Ongoing |
+| 8 | 💤 No Action | $0 | — |
 
-**Key Design Choices:**
-- **Persistent effects**: Solar panels keep producing renewable energy for 6 months
-- **Trade-offs**: High-impact actions (solar) cost more than low-impact (recycling)
-- **Strategic depth**: Some actions are quick wins (carbon offsets), others are investments (HVAC)
+### 3 Task Difficulty Levels
 
----
-
-## 🎯 Tasks
-
-### Task 1: Basic Compliance (Easy)
-**🎓 Learning Objective**: Understand ESG fundamentals and basic action effects
-
-**Scenario**: A mid-size company needs to meet minimum regulatory standards before an upcoming audit in 6 months.
-
-**Targets**:
-- ✅ Reduce carbon emissions by **15%** from baseline
-- ✅ Achieve **30%** renewable energy
-- ✅ Maintain diversity score above **60**
-- ✅ Keep compliance violations ≤ **2**
-
-**Constraints**:
-- Budget: **$500,000**
-- Timeline: **6 months** (6 steps)
-
-**Success Threshold**: **0.80** (80% of optimal performance)
-
-**Strategy Hints**:
-- Focus on 2-3 high-impact actions
-- Solar panels are excellent for renewable energy target
-- Don't overspend early – budget is tight
-- Natural diversity drift can help if you take 1-2 actions
+| Task | Difficulty | Steps | Budget | Targets |
+|------|:----------:|:-----:|:------:|---------|
+| `basic_compliance` | 🟢 Easy | 6 | $500K | -15% carbon, 30% renewable |
+| `aggressive_sustainability` | 🟡 Medium | 9 | $750K | -40% carbon, 60% renewable, 70% recycling |
+| `carbon_neutral_excellence` | 🔴 Hard | 12 | $1.2M | -90% carbon, 80% renewable, ALL metrics |
 
 ---
 
-### Task 2: Aggressive Sustainability (Medium)
-**🏆 Learning Objective**: Multi-objective optimization with budget constraints
+## 🧠 Training Pipeline
 
-**Scenario**: A company committed to ambitious 2030 sustainability goals. The board demands rapid progress in the next 9 months.
+```
+Dataset Builder
+(350 samples: heuristic + random + adversarial)
+        │
+        ▼
+ESGEnvironment.step()  ←──── LLM Generates Action JSON
+        │
+        ▼
+4 Independent Reward Functions
+  ├── reward_env_outcome()     (45%) — Simulator shaped reward
+  ├── reward_format_compliance() (25%) — Valid JSON enforcement
+  ├── reward_anti_cheat()       (15%) — Penalize NO_ACTION spam
+  └── reward_task_progress()    (15%) — Terminal grader signal
+        │
+        ▼
+TRL GRPOTrainer + Unsloth 4-bit LoRA
+(Qwen2.5-0.5B-Instruct, bf16, A100 80GB)
+        │
+        ▼
+Trained LoRA Adapter → tharun5054/esg-rl-agent-grpo
+```
 
-**Targets**:
-- ✅ Reduce carbon emissions by **40%**
-- ✅ Achieve **60%** renewable energy
-- ✅ Increase waste recycling to **70%**
-- ✅ Maintain diversity score above **75**
-- ✅ Keep compliance violations ≤ **1**
-
-**Constraints**:
-- Budget: **$750,000** (tight!)
-- Timeline: **9 months** (9 steps)
-
-**Success Threshold**: **0.70** (70% of optimal)
-
-**Strategy Hints**:
-- Requires 4-5 strategic actions across multiple dimensions
-- Combine high-impact (solar, HVAC) with low-cost (recycling) actions
-- Ongoing effects are critical – prioritize actions with 6-12 month durations
-- Budget efficiency matters – staying in budget earns bonus points
-- Must address waste recycling (often overlooked!)
+### A100 Training Config (V2)
+- **150 steps** across a **3-stage curriculum**: 50 steps easy → 60 steps medium → 40 steps hard
+- **6 GRPO generations** per prompt for better policy gradient signal
+- **LR: 8e-6** with grad norm 0.8 for stable convergence
+- **350-sample dataset** mixing heuristic rollouts, random exploration, and adversarial scenarios
+- **Cost:** ~$4.50 on A100 Large
 
 ---
 
-### Task 3: Carbon Neutral Excellence (Hard)
-**🌟 Learning Objective**: Holistic ESG excellence with near-carbon-neutrality
+## 📊 Benchmark Results (V2 A100 Model)
 
-**Scenario**: A Fortune 500 company pursuing industry-leading ESG performance and carbon neutrality within 12 months.
+All scores measured across **5 seeds per task** using the deterministic environment grader.
 
-**Targets**:
-- ✅ Reduce carbon emissions by **90%** (near net-zero!)
-- ✅ Achieve **80%** renewable energy
-- ✅ Reduce water usage by **30%**
-- ✅ Increase waste recycling to **75%**
-- ✅ Maintain diversity score above **85**
-- ✅ Maintain employee satisfaction above **90**
-- ✅ Achieve **zero** compliance violations
+| Agent | Easy | Medium | Hard | Overall |
+|-------|:----:|:------:|:----:|:-------:|
+| 🎲 Random | 0.740 | 0.643 | 0.678 | **0.687** |
+| 🧠 Heuristic Baseline | 1.000 | 0.847 | 0.852 | **0.900** |
+| 🚀 **V2 GRPO (A100)** | **1.000** | **0.880** | **0.726** | **0.869** |
 
-**Constraints**:
-- Budget: **$1,000,000**
-- Timeline: **12 months** (12 steps)
+> 🏆 **The V2 GRPO Agent outperformed the hand-coded heuristic on the Medium task (0.880 vs 0.847)**, demonstrating genuine zero-shot generalization of learned ESG strategies.
 
-**Success Threshold**: **0.60** (60% of optimal – very challenging!)
+### Improvement vs. Random Baseline
 
-**Strategy Hints**:
-- Requires near-perfect execution across ALL 6 dimensions
-- 90% carbon reduction demands solar + HVAC + carbon offsets
-- Water target requires water recycling system
-- Employee satisfaction naturally decays – needs active management
-- Timing matters: sequence actions for maximum ongoing benefit overlap
-- Zero violations tolerance – compliance actions are mandatory
-
-**Critical Threshold**: Agents scoring <80% carbon reduction receive **50% penalty** (reflects real-world regulatory "cliff" penalties)
+| Task | Random | V2 GRPO | Δ |
+|------|:------:|:-------:|:-:|
+| Easy | 0.740 | 1.000 | **+35.1%** |
+| Medium | 0.643 | 0.880 | **+36.8%** |
+| Hard | 0.678 | 0.726 | **+7.1%** |
+| **Overall** | **0.687** | **0.869** | **+26.5%** |
 
 ---
 
-## 💰 Reward Strategy
+## 🛡️ Anti-Reward-Hacking Measures
 
-### Philosophy: **Dense, Multi-Component Shaping**
+Following OpenEnv Hackathon Guide §8 requirements:
 
-Unlike sparse reward environments (reward only at end), we provide **incremental feedback** at every step to accelerate learning.
-
-### Reward Components (10 Total)
-
-#### Positive Rewards (Progress Toward Targets)
-
-```python
-# 1. Carbon Reduction Progress
-if carbon_tons_reduced > previous_step:
-    reward += 0.1 * (reduction_amount / 100)
-
-# 2. Renewable Energy Progress  
-if renewable_pct > previous_renewable_pct:
-    reward += 0.05 * percentage_gain
-
-# 3. Diversity Score Progress
-if diversity_score > previous_diversity:
-    reward += 0.05 * point_gain
-
-# 4. Waste Recycling Progress
-if waste_recycled_pct > previous_waste_pct:
-    reward += 0.03 * percentage_gain
-
-# 5. Water Reduction Progress
-if water_usage < previous_water_usage:
-    reward += 0.02 * (reduction_amount / 1000)
-```
-
-#### Penalties (Negative Incentives)
-
-```python
-# 6. Bankruptcy Penalty
-if budget < 0:
-    reward -= 1.0  # Severe penalty
-
-# 7. Compliance Violations Penalty
-reward -= 0.2 * num_violations  # -0.2 per violation
-```
-
-#### Milestone Bonuses
-
-```python
-# 8. Quarterly Milestone Bonus/Penalty
-if end_of_quarter:
-    progress = current_achievement / expected_by_quarter
-    if progress >= 0.8:  # 80% of expected progress
-        reward += 0.5
-    else:
-        reward -= 0.3  # Behind schedule!
-```
-
-#### Synergy Bonuses
-
-```python
-# 9. Multi-Metric Improvement Bonus
-num_improving = sum([
-    carbon_reduced > 50,
-    renewable_gained > 2,
-    diversity_gained > 1,
-    waste_improved > 2
-])
-if num_improving >= 2:
-    reward += 0.15 * num_improving  # Encourage holistic strategies
-```
-
-#### Terminal Rewards
-
-```python
-# 10. Task Completion Bonus (final step only)
-if all_targets_met:
-    reward += 5.0  # Major success bonus
-elif progress >= 0.8:
-    reward += 2.0  # Partial success
-else:
-    reward -= 1.0  # Failed to meet goals
-```
-
-### Total Reward Range
-
-**Per step**: ~-1.5 to +1.0 (shaped rewards)  
-**Terminal**: -1.0 to +5.0 (completion bonus)  
-**Episode total**: Typically 2-15 for successful episodes
-
-**Why This Works:**
-- ✅ Agent gets immediate feedback (not waiting 12 steps)
-- ✅ Encourages balanced strategies (synergy bonuses)
-- ✅ Penalizes poor budget management (bankruptcy)
-- ✅ Rewards strategic timing (quarterly milestones)
-- ✅ Provides clear success signal (5.0 final bonus)
+- ✅ **12 independent reward signals** (not one monolithic function)
+- ✅ **Anti-cheat penalty** for `NO_ACTION` spamming
+- ✅ **Anti-cheat penalty** for repeating cheap actions in sequence
+- ✅ **Budget bankruptcy detection** (severe negative reward)
+- ✅ **Per-step wall-clock timeout** (10s) in FastAPI server
+- ✅ **Thread-safe session isolation** (UUID per session, no shared state)
+- ✅ **Deterministic graders** (same input → same score, always)
+- ✅ **Format compliance reward** (forces structured JSON output)
 
 ---
 
-## 🚀 Installation & Setup
+## 🚀 Quick Start
 
-### Prerequisites
-
-- Python 3.9+ (3.11 recommended)
-- Docker (optional, for containerized deployment)
-- OpenAI-compatible API access (for LLM inference)
-
-### Local Installation
+### 1. Clone & Install
 
 ```bash
-# Clone repository
-git clone <your-repo-url>
-cd esg-compliance-env
-
-# Create virtual environment (recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+git clone https://github.com/TharunBabu-05/OPEN-ENV
+cd OPEN-ENV
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-
-# Verify installation
-python tasks.py
 ```
 
-**Expected output:**
-```
-======================================================================
-ESG TASK DEFINITIONS AND GRADER EXAMPLES
-======================================================================
-...
-✓ DETERMINISTIC: All scores identical
-======================================================================
-```
-
-### Docker Installation
-
+### 2. Run Smoke Test (No GPU)
 ```bash
-# Build Docker image
-docker build -t esg-env:latest .
-
-# Test without LLM (tasks only)
-docker run esg-env:latest python tasks.py
-
-# Run full inference (requires API credentials)
-docker run \
-  -e API_BASE_URL="https://api.openai.com/v1" \
-  -e MODEL_NAME="gpt-4" \
-  -e HF_TOKEN="your-token" \
-  esg-env:latest
+python train_rl.py --smoke_test
 ```
+
+### 3. Live Demo — Watch the Agent Play
+```bash
+python demo_script.py
+```
+
+### 4. Run Full Benchmark
+```bash
+# Windows
+.\run_benchmark.ps1
+
+# Or manually
+python benchmark.py --mode random --output results/baseline_random.json
+python benchmark.py --mode heuristic --output results/baseline_heuristic.json
+python benchmark.py --mode llm --model_path tharun5054/esg-rl-agent-grpo --output results/trained.json
+```
+
+### 5. Start the FastAPI Server
+```bash
+uvicorn app:app --reload --port 8000
+```
+
+### 6. Train on A100 (HuggingFace Space)
+Go to the [Training Space](https://huggingface.co/spaces/tharun5054/esg-rl-train), enter your HF token, and click **🚀 Start Training**.
 
 ---
 
-## 🤖 Running Inference
-
-### Environment Variables
-
-Set these before running inference:
-
-```bash
-export API_BASE_URL="https://api.openai.com/v1"  # Or any OpenAI-compatible endpoint
-export MODEL_NAME="gpt-4"                         # Or gpt-3.5-turbo, llama-2, etc.
-export HF_TOKEN="your-huggingface-token"          # Optional, for HF Inference API
-```
-
-### Run All Tasks
-
-```bash
-python inference.py
-```
-
-**Output format** (structured JSON logs):
-
-```json
-{"type": "INFO", "message": "Starting ESG Environment Inference"}
-{"type": "START", "task_id": "basic_compliance", "max_steps": 6}
-{"type": "STEP", "step": 1, "action": 0, "action_name": "INSTALL_SOLAR_PANELS", "reward": 0.25, "carbon_reduction_pct": 2.1}
-{"type": "STEP", "step": 2, "action": 1, "action_name": "UPGRADE_HVAC_EFFICIENCY", "reward": 0.18}
-...
-{"type": "END", "task_id": "basic_compliance", "score": 0.92, "total_steps": 6}
-{"type": "START", "task_id": "aggressive_sustainability", ...}
-...
-{"type": "SUMMARY", "task_scores": {...}, "average_score": 0.73}
-```
-
-### Custom LLM Endpoints
-
-**Hugging Face Inference API:**
-```bash
-export API_BASE_URL="https://api-inference.huggingface.co/models/meta-llama/Llama-3-8B-Instruct"
-export MODEL_NAME="meta-llama/Llama-3-8B-Instruct"
-export HF_TOKEN="hf_..."
-python inference.py
-```
-
-**Local Ollama:**
-```bash
-export API_BASE_URL="http://localhost:11434/v1"
-export MODEL_NAME="llama2"
-export HF_TOKEN="dummy"
-python inference.py
-```
-
-### Save Logs
-
-```bash
-python inference.py > results.jsonl 2>&1
-```
-
----
-
-## 📊 Baseline Performance
-
-### Expected Scores (GPT-4 Agent)
-
-| Task | Difficulty | Expected Score | Pass Threshold | Typical Strategy |
-|------|-----------|----------------|----------------|------------------|
-| **Basic Compliance** | Easy | **0.85 - 0.95** | 0.80 | Solar panels → HVAC → Diversity initiative |
-| **Aggressive Sustainability** | Medium | **0.65 - 0.80** | 0.70 | Solar → HVAC → Recycling → Diversity → Water |
-| **Carbon Neutral Excellence** | Hard | **0.45 - 0.70** | 0.60 | Solar → HVAC → Water → Offsets → Wellness → Diversity |
-
-### Performance Breakdown
-
-#### Task 1: Basic Compliance (Easy)
-**Sample successful trajectory:**
-```
-Month 1: INSTALL_SOLAR_PANELS (-$150K, +15% renewable immediately)
-Month 2: UPGRADE_HVAC_EFFICIENCY (-$80K, -500 kWh)
-Month 3: DIVERSITY_HIRING_INITIATIVE (-$50K, +8 diversity)
-Month 4: NO_ACTION (let ongoing effects accumulate)
-Month 5: CARBON_OFFSET_PURCHASE (-$40K, -400 tons CO₂)
-Month 6: ENERGY_AUDIT (-$15K, -100 kWh)
-
-Final State:
-✓ Carbon Reduction: 18% (target: 15%) ✓
-✓ Renewable Energy: 42% (target: 30%) ✓
-✓ Diversity: 64 (target: 60) ✓
-✓ Violations: 1 (target: ≤2) ✓
-✓ Budget Remaining: $165K
-
-Final Score: 0.92
-```
-
-#### Task 2: Aggressive Sustainability (Medium)
-**Sample successful trajectory:**
-```
-Month 1: INSTALL_SOLAR_PANELS (-$150K)
-Month 2: UPGRADE_HVAC_EFFICIENCY (-$80K)
-Month 3: IMPLEMENT_RECYCLING_PROGRAM (-$25K)
-Month 4: DIVERSITY_HIRING_INITIATIVE (-$50K)
-Month 5: INSTALL_WATER_RECYCLING (-$60K)
-Month 6: NO_ACTION (ongoing effects working)
-Month 7: CARBON_OFFSET_PURCHASE (-$40K)
-Month 8: EMPLOYEE_WELLNESS_PROGRAM (-$30K)
-Month 9: ENERGY_AUDIT (-$15K)
-
-Final State:
-✓ Carbon Reduction: 43% (target: 40%) ✓
-✓ Renewable Energy: 62% (target: 60%) ✓
-✓ Waste Recycling: 72% (target: 70%) ✓
-✓ Diversity: 77 (target: 75) ✓
-✓ Budget: $300K → $0 (stayed in budget!) ✓
-
-Final Score: 0.78
-```
-
-#### Task 3: Carbon Neutral Excellence (Hard)
-**Requires near-perfect execution!**
-
-Common failure modes:
-- ❌ **Insufficient carbon reduction** (only reaching 70-80% instead of 90%)
-- ❌ **Neglecting water usage** (forgetting water recycling system)
-- ❌ **Employee satisfaction decay** (drops below 90 by month 12)
-- ❌ **Budget exhaustion** (trying to do too much)
-
-**Key insight**: Achieving 90% carbon reduction requires 3+ complementary actions (solar + HVAC + offsets), carefully timed to maximize ongoing effect overlap.
-
-### Runtime Performance
-
-**Measured on 2 vCPU, 8GB RAM:**
-
-| Task | Steps | API Calls | Wall Time | Memory |
-|------|-------|-----------|-----------|---------|
-| Basic Compliance | 6 | 6 | 2-3 min | ~80 MB |
-| Aggressive Sustainability | 9 | 9 | 4-5 min | ~90 MB |
-| Carbon Neutral Excellence | 12 | 12 | 6-8 min | ~100 MB |
-| **Total (all 3)** | **27** | **27** | **12-16 min** | **~100 MB** |
-
-✅ **Well under 20-minute OpenEnv constraint**
-
----
-
-## 🔧 Technical Details
-
-### File Structure
-
-```
-esg-compliance-env/
-├── models.py              # Pydantic models (Observation, Action, TaskConfig, etc.)
-├── env.py                 # ESGEnvironment class (reset, step, state)
-├── tasks.py               # Task definitions + deterministic graders
-├── inference.py           # LLM agent with OpenAI API + structured logging
-├── openenv.yaml           # OpenEnv specification
-├── Dockerfile             # Container configuration
-├── pyproject.toml         # Python package metadata
-├── requirements.txt       # Dependencies (pydantic, openai)
-├── README.md              # This file
-├── DOCKER_GUIDE.md        # Docker build/run instructions
-└── LICENSE                # MIT License
-```
-
-### Dependencies
-
-**Core:**
-- `pydantic>=2.0.0` - Type-safe data models
-- `openai>=1.0.0` - LLM inference client
-
-**Python:** 3.9, 3.10, 3.11, or 3.12
-
-### API Reference
+## 🤖 Use the Trained Model
 
 ```python
-from env import ESGEnvironment
-from tasks import get_task_config, grade_task
+from peft import PeftModel
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Initialize environment
-task_config = get_task_config("basic_compliance")
-env = ESGEnvironment(task_config=task_config, seed=42)
+base = AutoModelForCausalLM.from_pretrained("unsloth/Qwen2.5-0.5B-Instruct")
+model = PeftModel.from_pretrained(base, "tharun5054/esg-rl-agent-grpo", subfolder="lora_adapter")
+tokenizer = AutoTokenizer.from_pretrained("tharun5054/esg-rl-agent-grpo", subfolder="lora_adapter")
 
-# Run episode
-obs = env.reset()
-for step in range(task_config.max_steps):
-    action = agent.select_action(obs)  # Your agent
-    obs, reward, terminated, truncated, info = env.step(action)
-    if terminated or truncated:
-        break
+prompt = """You are an ESG sustainability strategist. Current state:
+- Carbon Emissions: 1200 tons (target: -15%)
+- Renewable Energy: 12% (target: 30%)
+- Available Budget: $500,000
 
-# Grade performance
-score = grade_task("basic_compliance", obs)
-print(f"Final score: {score:.2f}")
-```
+Choose an action (0-8) and explain your reasoning."""
 
-### Validation
-
-```bash
-# Test determinism
-python tasks.py
-
-# Validate OpenEnv compliance (if openenv CLI installed)
-openenv validate
-
-# Run environment manually
-python -c "from env import ESGEnvironment; from tasks import TASKS; env = ESGEnvironment(TASKS['basic_compliance']); print(env.reset())"
+inputs = tokenizer(prompt, return_tensors="pt")
+out = model.generate(**inputs, max_new_tokens=128, temperature=0.7)
+print(tokenizer.decode(out[0], skip_special_tokens=True))
+# Output: {"action": 0, "reasoning": "Installing solar panels will boost renewable energy..."}
 ```
 
 ---
 
-## 📄 Citation
+## 📐 Environment API
 
-If you use this environment in your research, please cite:
+The environment is fully compatible with the OpenEnv judging API:
 
-```bibtex
-@software{esg_compliance_env_2026,
-  title={AI ESG Compliance and Sustainability Evaluation Environment},
-  author={OpenEnv Hackathon Submission},
-  year={2026},
-  url={https://github.com/openenv/esg-compliance-env},
-  note={OpenEnv Hackathon 2026 Submission}
-}
+```
+POST /reset         → { "obs": {...17 fields...}, "session_id": "..." }
+POST /step          → { "obs": {...}, "reward": 1.23, "done": false, "info": {...} }
+GET  /tasks         → List of available task configs
+GET  /health        → Server health check
 ```
 
 ---
 
-## 🙏 Acknowledgments
+## 🔗 Links
 
-- **Inspired by**: Real-world ESG frameworks (GRI, SASB, TCFD, EU Taxonomy)
-- **Built for**: OpenEnv Hackathon 2026
-- **Standards**: Aligned with Science-Based Targets initiative (SBTi) for carbon reduction pathways
+| | |
+|-|-|
+| 📦 **GitHub** | [TharunBabu-05/OPEN-ENV](https://github.com/TharunBabu-05/OPEN-ENV) |
+| 🤗 **Trained Model** | [tharun5054/esg-rl-agent-grpo](https://huggingface.co/tharun5054/esg-rl-agent-grpo) |
+| 🚀 **Training Space** | [tharun5054/esg-rl-train](https://huggingface.co/spaces/tharun5054/esg-rl-train) |
+| 📊 **Evaluation Report** | [EVALUATION_REPORT.md](./EVALUATION_REPORT.md) |
+| 📋 **Submission Brief** | [SUBMISSION.md](./SUBMISSION.md) |
 
 ---
 
 ## 📜 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
-
----
-
-## 🌟 Why This Environment Matters
-
-**This is not a toy problem.** Corporate ESG optimization is a **$35 trillion market** with real-world impact on climate change, social equity, and governance standards.
-
-By training AI agents to discover optimal ESG strategies, we can:
-- ✅ Help companies achieve net-zero faster
-- ✅ Reduce the cost of sustainability transitions
-- ✅ Democratize ESG expertise for smaller companies
-- ✅ Accelerate progress toward UN Sustainable Development Goals
-
-**Let's build AI that helps save the planet.** 🌍
-
----
-
-**Questions? Issues? Contributions welcome!**
+MIT © 2026 Tharun Babu
