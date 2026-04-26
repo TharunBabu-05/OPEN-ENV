@@ -50,20 +50,24 @@
 
 <div align="center">
 
-```
-+------------------------------------------------------------------+
-|                  ESG RL ENVIRONMENT LOOP                         |
-+------------------+---------------------+-------------------------+
-|  Company State   |     LLM Agent       |        Results          |
-+------------------+---------------------+-------------------------+
-|  Carbon: 1200t   |  {"action": 0,      |  Carbon    : -53%       |
-|  Renewable: 12%  |   "reasoning":      |  Renewable :  33%       |
-|  Budget: $500K   |   "Solar maximizes  |  Budget    : $350K      |
-|  Month: 1/6      |    long-term ROI"}  |  Score     :  1.000     |
-+------------------+---------------------+-------------------------+
-|              ^ GRPO trains this policy ^                         |
-+------------------------------------------------------------------+
-```
+<table align="center">
+<tr>
+  <td colspan="3" align="center"><b>🔄 ESG RL ENVIRONMENT LOOP</b></td>
+</tr>
+<tr>
+  <td align="center" width="260"><b>🏢 Company State</b></td>
+  <td align="center" width="260"><b>🤖 LLM Agent</b></td>
+  <td align="center" width="260"><b>✅ Results</b></td>
+</tr>
+<tr>
+  <td>• Carbon: 1200 tons<br/>• Renewable: 12%<br/>• Budget: $500K<br/>• Month: 1/6</td>
+  <td><code>{"action": 0,</code><br/><code> "reasoning": "Solar</code><br/><code> maximizes long-term</code><br/><code> ROI"}</code></td>
+  <td>• Carbon &nbsp;&nbsp;&nbsp;: -53%<br/>• Renewable : 33%<br/>• Budget &nbsp;&nbsp;&nbsp;: $350K<br/>• <b>Score &nbsp;&nbsp;&nbsp;&nbsp;: 1.000</b></td>
+</tr>
+<tr>
+  <td colspan="3" align="center"><i>↑ GRPO trains this policy ↑</i></td>
+</tr>
+</table>
 
 <br/>
 
