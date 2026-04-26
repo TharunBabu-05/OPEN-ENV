@@ -67,7 +67,7 @@
 
 <br/>
 
-<table>
+<table align="center">
 <tr>
   <td align="center" width="260"><b>🎯 Score vs Heuristic</b></td>
   <td align="center" width="260"><b>💡 Key Innovation</b></td>
