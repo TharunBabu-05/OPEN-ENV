@@ -4,7 +4,7 @@
 
 param(
     [string]$SpaceName = "esg-compliance-env",
-    [string]$HFUsername = "YOUR_HF_USERNAME"   # <-- Update this
+    [string]$HFUsername = "tharun5054"
 )
 
 Write-Host "=== Deploying to HuggingFace Spaces ===" -ForegroundColor Cyan
@@ -39,7 +39,8 @@ except Exception as e:
 
 # Files to upload
 files = [
-    ('space_app.py', 'app.py'),  # Gradio app (renamed to app.py for HF)
+    ('space_app.py', 'app.py'),
+    ('space_app.py', 'space_app.py'),
     ('env.py', 'env.py'),
     ('models.py', 'models.py'),
     ('tasks.py', 'tasks.py'),
