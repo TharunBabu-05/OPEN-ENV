@@ -1,0 +1,92 @@
+onfig.json:   0%|          | 0.00/761 [00:00<?, ?B/s]
+config.json: 100%|██████████| 761/761 [00:00<00:00, 3.62MB/s]
+Unsloth: Restored added_tokens_decoder metadata in outputs/grpo_step_150_a100_v2/merged_model/tokenizer_config.json.
+Found HuggingFace hub cache directory: /home/user/.cache/huggingface/hub
+Checking cache directory for required files...
+Cache check failed: model.safetensors not found in local cache.
+Not all required files found in cache. Will proceed with downloading.
+Checking cache directory for required files...
+Cache check failed: tokenizer.model not found in local cache.
+Not all required files found in cache. Will proceed with downloading.
+
+Unsloth: Preparing safetensor model files:   0%|          | 0/1 [00:00<?, ?it/s]2026-04-26 02:48:55,753 [INFO] HTTP Request: HEAD https://huggingface.co/unsloth/qwen2.5-0.5b-instruct/resolve/main/model.safetensors "HTTP/1.1 307 Temporary Redirect"
+2026-04-26 02:48:55,761 [INFO] HTTP Request: HEAD https://huggingface.co/unsloth/Qwen2.5-0.5B-Instruct/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-04-26 02:48:55,767 [INFO] HTTP Request: GET https://huggingface.co/api/models/unsloth/Qwen2.5-0.5B-Instruct/xet-read-token/ae616882a38b36759fc46ac3fd6769498833b913 "HTTP/1.1 200 OK"
+
+model.safetensors:   0%|          | 0.00/988M [00:00<?, ?B/s]
+model.safetensors:  27%|██▋       | 268M/988M [00:01<00:02, 266MB/s]
+model.safetensors: 100%|██████████| 988M/988M [00:01<00:00, 816MB/s]
+
+Unsloth: Preparing safetensor model files: 100%|██████████| 1/1 [00:01<00:00,  1.23s/it]
+Unsloth: Preparing safetensor model files: 100%|██████████| 1/1 [00:01<00:00,  1.23s/it]
+2026-04-26 02:48:56,986 [INFO] HTTP Request: HEAD https://huggingface.co/unsloth/qwen2.5-0.5b-instruct/resolve/main/tokenizer.model "HTTP/1.1 307 Temporary Redirect"
+2026-04-26 02:48:56,993 [INFO] HTTP Request: HEAD https://huggingface.co/unsloth/Qwen2.5-0.5B-Instruct/resolve/main/tokenizer.model "HTTP/1.1 404 Not Found"
+Note: tokenizer.model not found (this is OK for non-SentencePiece models)
+
+Unsloth: Merging weights into 16bit:   0%|          | 0/1 [00:00<?, ?it/s]
+Unsloth: Merging weights into 16bit: 100%|██████████| 1/1 [00:01<00:00,  1.66s/it]
+Unsloth: Merging weights into 16bit: 100%|██████████| 1/1 [00:01<00:00,  1.66s/it]
+Unsloth: Merge process complete. Saved to `/home/user/app/outputs/grpo_step_150_a100_v2/merged_model`
+2026-04-26 02:49:02,073 [INFO] Merged 16-bit model saved -> outputs/grpo_step_150_a100_v2/merged_model
+2026-04-26 02:49:02,074 [INFO] Config saved -> outputs/grpo_step_150_a100_v2/train_config_used.json
+2026-04-26 02:49:02,075 [INFO] ============================================================
+2026-04-26 02:49:02,075 [INFO] A100 TRAINING COMPLETE
+2026-04-26 02:49:02,075 [INFO] Total steps: 150
+2026-04-26 02:49:02,075 [INFO] Output: outputs/grpo_step_150_a100_v2
+2026-04-26 02:49:02,075 [INFO] ============================================================
+2026-04-26 02:49:02,101 [INFO] HTTP Request: POST https://huggingface.co/api/repos/create "HTTP/1.1 409 Conflict"
+2026-04-26 02:49:02,107 [INFO] HTTP Request: POST https://huggingface.co/api/validate-yaml "HTTP/1.1 200 OK"
+2026-04-26 02:49:02,395 [INFO] HTTP Request: POST https://huggingface.co/api/models/tharun5054/esg-rl-agent-grpo/preupload/main "HTTP/1.1 200 OK"
+2026-04-26 02:49:02,418 [INFO] HTTP Request: POST https://huggingface.co/tharun5054/esg-rl-agent-grpo.git/info/lfs/objects/batch "HTTP/1.1 200 OK"
+2026-04-26 02:49:02,432 [INFO] HTTP Request: GET https://huggingface.co/api/models/tharun5054/esg-rl-agent-grpo/xet-write-token/main "HTTP/1.1 200 OK"
+Processing Files (0 / 0)      : |          |  0.00B /  0.00B            
+New Data Upload               : |          |  0.00B /  0.00B            
+
+  ...adapter_model.safetensors:   0%|          | 38.0kB / 35.2MB            
+
+
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+
+  ...adapter_model.safetensors:   0%|          | 38.0kB / 35.2MB            
+
+
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+
+  ...adapter_model.safetensors:  99%|█████████▉| 35.0MB / 35.2MB            
+
+
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+
+  ...adapter_model.safetensors:  99%|█████████▉| 35.0MB / 35.2MB            
+
+
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+
+  ...adapter_model.safetensors:  99%|█████████▉| 35.0MB / 35.2MB            
+
+
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+
+  ...adapter_model.safetensors: 100%|██████████| 35.2MB / 35.2MB            
+
+
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+Processing Files (2 / 2)      : 100%|██████████| 46.7MB / 46.7MB, 44.0MB/s  
+New Data Upload               : 100%|██████████| 35.2MB / 35.2MB, 44.0MB/s  
+
+  ...adapter_model.safetensors: 100%|██████████| 35.2MB / 35.2MB            
+
+
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+
+  ...adapter_model.safetensors: 100%|██████████| 35.2MB / 35.2MB            
+
+
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+Processing Files (2 / 2)      : 100%|██████████| 46.7MB / 46.7MB, 35.2MB/s  
+New Data Upload               : 100%|██████████| 35.2MB / 35.2MB, 35.2MB/s  
+  ...adapter_model.safetensors: 100%|██████████| 35.2MB / 35.2MB            
+  ...ra_adapter/tokenizer.json: 100%|██████████| 11.4MB / 11.4MB            
+2026-04-26 02:49:03,934 [INFO] HTTP Request: POST https://huggingface.co/api/models/tharun5054/esg-rl-agent-grpo/commit/main "HTTP/1.1 200 OK"
+2026-04-26 02:49:03,966 [INFO] HTTP Request: POST https://huggingface.co/api/models/tharun5054/esg-rl-agent-grpo/preupload/main "HTTP/1.1 200 OK"
+2026-04-26 02:49:04,222 [INFO] HTTP Request: POST https://huggingface.co/api/models/tharun5054/esg-rl-agent-grpo/commit/main "HTTP/1.1 200 OK"
