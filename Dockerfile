@@ -21,14 +21,11 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy dependency files first (for Docker layer caching)
-COPY pyproject.toml ./
 COPY requirements.txt ./
-COPY space_requirements.txt ./
 
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir gradio>=4.0.0
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY models.py ./
@@ -41,8 +38,11 @@ COPY dataset_builder.py ./
 COPY reward_functions.py ./
 COPY openenv.yaml ./
 
-# Create results directory
-RUN mkdir -p /app/results /app/data
+# Copy results folder (benchmark charts)
+COPY results/ ./results/
+
+# Create data directory
+RUN mkdir -p /app/data
 
 # Create non-root user for security
 RUN useradd -m -u 1000 appuser && \

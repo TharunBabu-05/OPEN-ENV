@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Compliance Simulator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: rgba(20, 25, 40, 0.6);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent: #00d9ff;
+            --accent-hover: #00aadd;
+            --text-main: #f0f4f8;
+            --text-muted: #8b9bb4;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 217, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--panel-border);
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .btn-reset {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 350px 1fr 350px;
+            gap: 24px;
+            padding: 30px 40px;
+            flex: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .glass-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-top: 0;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 12px;
+        }
+
+        /* Stats Panel */
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-value.budget { color: var(--success); }
+        .stat-value.carbon { color: var(--warning); }
+        .stat-value.month { color: var(--accent); }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Actions Panel */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 217, 255, 0.15);
+        }
+
+        .action-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .action-icon {
+            font-size: 28px;
+        }
+
+        /* Log Panel */
+        .log-container {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 8px;
+        }
+
+        .log-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .log-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .log-entry {
+            background: rgba(0, 0, 0, 0.2);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 4px 8px 8px 4px;
+            font-size: 14px;
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        .log-entry.reward-pos { border-left-color: var(--success); }
+        .log-entry.reward-neg { border-left-color: var(--danger); }
+
+        .log-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .log-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .log-reward {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+        .reward-pos .log-reward { color: var(--success); }
+        .reward-neg .log-reward { color: var(--danger); }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Loading Overlay */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+        .overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 217, 255, 0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .game-over-banner {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--text-main);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .go-title {
+            color: var(--success);
+            font-size: 24px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .json-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+
+        .json-string { color: #ce9178; }
+        .json-number { color: #b5cea8; }
+        .json-boolean { color: #569cd6; }
+        .json-key { color: #9cdcfe; }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 10px;
+        }
+        
+        .charts-grid img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .charts-grid img:hover {
+            transform: scale(1.02);
+            border-color: var(--accent);
+        }
+
+        /* Lightbox Overlay */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 217, 255, 0.2);
+            border: 1px solid var(--accent);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--danger);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+        <div class="lightbox-close">&times;</div>
+        <img id="lightboxImg" src="" alt="Enlarged Chart" onclick="event.stopPropagation()">
+    </div>
+
+    <div class="overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div style="font-weight: 600; letter-spacing: 1px;">CONNECTING TO LIVE API...</div>
+    </div>
+
+    <header class="header">
+        <h1>ESG COMPLIANCE SIMULATOR</h1>
+        <button class="btn-reset" onclick="resetGame()">↻ New Game</button>
+    </header>
+
+    <div class="container">
+        <!-- Left: Stats -->
+        <div class="glass-panel">
+            <h2>Current State</h2>
+            
+            <div class="stat-box">
+                <div class="stat-label">Current Month</div>
+                <div class="stat-value month" id="valMonth">- / -</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-label">Available Budget</div>
+                <div class="stat-value budget" id="valBudget">$0</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-label">Carbon Emissions (Tons)</div>
+                <div class="stat-value carbon" id="valCarbon">0</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-label">Renewable Energy</div>
+                <div class="stat-value" id="valRenewable" style="color: var(--accent)">0%</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="barRenewable"></div>
+                </div>
+            </div>
+
+            <div class="stat-box" style="display: flex; justify-content: space-between; padding: 12px 16px;">
+                <div>
+                    <div class="stat-label">Diversity</div>
+                    <div class="stat-value" id="valDiversity" style="font-size: 20px;">0</div>
+                </div>
+                <div style="text-align: right;">
+                    <div class="stat-label">Violations</div>
+                    <div class="stat-value" id="valViolations" style="font-size: 20px; color: var(--danger)">0</div>
+                </div>
+            </div>
+            
+            <div class="stat-box" style="margin-top: auto; border-color: var(--accent); background: rgba(0,217,255,0.05);">
+                <div class="stat-label" style="color: var(--accent)">Total Score</div>
+                <div class="stat-value" id="valScore" style="color: #fff">0.000</div>
+            </div>
+        </div>
+
+        <!-- Center: Actions -->
+        <div class="glass-panel" style="flex: 2; overflow-y: auto;">
+            <h2>Take Action</h2>
+            <div class="game-over-banner" id="gameOverBanner">
+                <div class="go-title" id="goTitle">🏁 EPISODE FINISHED!</div>
+                
+                <div style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Raw API Response (Final Step)</div>
+                <pre class="json-block" id="jsonOutput"></pre>
+                
+                <div style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px;">Benchmark Comparison (Click to Enlarge)</div>
+                <div class="charts-grid">
+                    <img src="results/score_comparison.png" alt="Score Comparison" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                    <img src="results/reward_history.png" alt="Reward History" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                    <img src="results/esg_metrics.png" alt="ESG Metrics" style="grid-column: span 2;" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                </div>
+            </div>
+            <div class="actions-grid" id="actionsGrid">
+                <!-- Buttons injected by JS -->
+            </div>
+        </div>
+
+        <!-- Right: Logs -->
+        <div class="glass-panel">
+            <h2>Action Log</h2>
+            <div class="log-container" id="logContainer">
+                <div style="text-align: center; color: var(--text-muted); margin-top: 40px; font-style: italic;">
+                    Game started. Waiting for actions...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://tharun5054-esg-compliance-env.hf.space";
+        let currentSessionId = null;
+        let totalScore = 0;
+
+        const ACTIONS = [
+            { id: 0, icon: '☀️', name: 'Install Solar Panels', cost: '$150K' },
+            { id: 1, icon: '❄️', name: 'Upgrade HVAC', cost: '$80K' },
+            { id: 2, icon: '♻️', name: 'Recycling Program', cost: '$20K' },
+            { id: 3, icon: '💧', name: 'Water Conservation', cost: '$15K' },
+            { id: 4, icon: '🌳', name: 'Carbon Offsets', cost: '$40K' },
+            { id: 5, icon: '🤝', name: 'Diversity Hiring', cost: '$50K' },
+            { id: 6, icon: '🧘', name: 'Wellness Program', cost: '$30K' },
+            { id: 7, icon: '📋', name: 'Compliance Audit', cost: '$25K' },
+            { id: 8, icon: '⏳', name: 'Do Nothing', cost: '$0' }
+        ];
+
+        function initUI() {
+            const grid = document.getElementById('actionsGrid');
+            grid.innerHTML = '';
+            ACTIONS.forEach(a => {
+                const btn = document.createElement('button');
+                btn.className = 'action-btn';
+                btn.onclick = () => takeAction(a.id, a.name);
+                btn.innerHTML = `
+                    <div class="action-icon">${a.icon}</div>
+                    <div>${a.name}</div>
+                    <div style="font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono'">${a.cost}</div>
+                `;
+                grid.appendChild(btn);
+            });
+        }
+
+        function updateStats(obs) {
+            document.getElementById('valMonth').textContent = `${obs.current_month} / 6`;
+            
+            // Animate numbers
+            document.getElementById('valBudget').textContent = `$${(obs.available_budget).toLocaleString()}`;
+            document.getElementById('valCarbon').textContent = Math.round(obs.carbon_emissions_tons).toLocaleString();
+            
+            const ren = obs.renewable_energy_pct.toFixed(1);
+            document.getElementById('valRenewable').textContent = `${ren}%`;
+            document.getElementById('barRenewable').style.width = `${Math.min(ren, 100)}%`;
+            
+            document.getElementById('valDiversity').textContent = obs.diversity_score.toFixed(1);
+            document.getElementById('valViolations').textContent = obs.compliance_violations;
+            document.getElementById('valScore').textContent = totalScore.toFixed(3);
+        }
+
+        function setButtonsEnabled(enabled) {
+            document.querySelectorAll('.action-btn').forEach(btn => btn.disabled = !enabled);
+        }
+
+        function addLog(title, meta, reward) {
+            const container = document.getElementById('logContainer');
+            // Remove placeholder if present
+            if (container.children.length === 1 && container.children[0].tagName !== 'DIV' || container.children[0].innerText.includes('Waiting')) {
+                container.innerHTML = '';
+            }
+
+            const div = document.createElement('div');
+            let cls = 'log-entry';
+            if (reward > 0) cls += ' reward-pos';
+            else if (reward < 0) cls += ' reward-neg';
+            
+            div.className = cls;
+            div.innerHTML = `
+                <div class="log-meta">
+                    <span>${meta}</span>
+                </div>
+                <div class="log-title">${title}</div>
+                <div class="log-reward">${reward > 0 ? '+' : ''}${reward.toFixed(3)} Reward</div>
+            `;
+            container.prepend(div);
+        }
+
+        async function resetGame() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            document.getElementById('gameOverBanner').style.display = 'none';
+            document.getElementById('actionsGrid').style.display = 'grid';
+            document.getElementById('logContainer').innerHTML = `
+                <div style="text-align: center; color: var(--text-muted); margin-top: 40px; font-style: italic;">
+                    New session started. Waiting for actions...
+                </div>
+            `;
+            totalScore = 0;
+            setButtonsEnabled(true);
+
+            try {
+                const res = await fetch(`${API_URL}/reset`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task_id: 'aggressive_sustainability', seed: Math.floor(Math.random() * 1000) })
+                });
+                const data = await res.json();
+                
+                // Handle different API formats
+                const obs = data.observation || data;
+                currentSessionId = data.session_id || null;
+                
+                updateStats(obs);
+            } catch (e) {
+                alert("Failed to connect to Live API. Is the HuggingFace space awake?");
+                console.error(e);
+            }
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function openLightbox(src) {
+            const overlay = document.getElementById('lightboxOverlay');
+            document.getElementById('lightboxImg').src = src;
+            overlay.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxOverlay').classList.remove('active');
+        }
+
+        function syntaxHighlight(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'json-key';
+                    } else {
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'json-null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        async function takeAction(actionId, actionName) {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            
+            const payload = { action: actionId };
+            if (currentSessionId) payload.session_id = currentSessionId;
+
+            try {
+                const res = await fetch(`${API_URL}/step`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                
+                const obs = data.observation;
+                const reward = data.reward;
+                totalScore += reward;
+                
+                updateStats(obs);
+                addLog(`Action: ${actionName}`, `Month ${obs.current_month-1} ➔ ${obs.current_month}`, reward);
+
+                if (data.terminated || data.truncated) {
+                    setButtonsEnabled(false);
+                    document.getElementById('actionsGrid').style.display = 'none';
+                    document.getElementById('gameOverBanner').style.display = 'flex';
+                    document.getElementById('goTitle').innerText = `🏁 EPISODE FINISHED! FINAL SCORE: ${totalScore.toFixed(3)}`;
+                    document.getElementById('jsonOutput').innerHTML = syntaxHighlight(data);
+                }
+
+            } catch (e) {
+                alert("Action failed! Check console.");
+                console.error(e);
+            }
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        // Boot
+        initUI();
+        resetGame();
+
+    </script>
+</body>
+</html>

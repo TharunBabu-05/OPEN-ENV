@@ -19,10 +19,7 @@ from typing import Dict, Tuple
 # Make project importable
 sys.path.insert(0, str(Path(__file__).parent))
 
-try:
-    import gradio as gr
-except ImportError:
-    raise ImportError("Install gradio: pip install gradio")
+import gradio as gr
 
 from env import ESGEnvironment
 from models import Action, Observation
